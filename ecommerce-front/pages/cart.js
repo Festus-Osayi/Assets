@@ -7,6 +7,9 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Table from "@/components/table/Table";
 import Input from "@/components/input/Input";
+import ProductsCards from "@/components/productscards/ProductsCards";
+import { useRouter } from "next/router";
+
 
 const ColumnWrapper = styled.div`
     display: grid;
@@ -48,15 +51,16 @@ gap: 5px;
 `
 export default function Cart() {
     /*************  application states ************/
-    const { cartProducts, addToProducts, removeProducts } = useContext(CartContext)
+    const { cartProducts, addToProducts, removeProducts, clearCart } = useContext(CartContext)
     const [products, setProducts] = useState([])
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [city, setCity] = useState('')
     const [postalCode, setPostalCode] = useState('')
-    const [address, setAddress] = useState('')
+    const [streetAddress, setStreetAddress] = useState('')
     const [province, setProvince] = useState('')
     const [country, setCountry] = useState('')
+    const [isSuccess, setIsSuccess] = useState(false)
     /*********************************************/
     useEffect(() => {
         if (cartProducts.length > 0) {
@@ -67,6 +71,16 @@ export default function Cart() {
 
     }, [cartProducts])
 
+
+    useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+        if (window?.location.href.includes('success')) {
+            setIsSuccess(true);
+            clearCart();
+        }
+    }, []);
     /** functionality to add more products */
     const moreOfThisProduct = (id) => {
         addToProducts(id)
@@ -76,6 +90,20 @@ export default function Cart() {
         removeProducts(id)
     }
 
+    /** a function that make a request to checkout, 
+    * and also redirect the user 
+    * to the stripe url 
+    * */
+    async function goToPayment() {
+        // get all data from inputs
+        const data = { name, email, city, postalCode, streetAddress, province, country, cartProducts }
+        const res = await axios.post('/api/checkout', data)
+        if (res.data.url) {
+            window.location = res.data.url
+
+        }
+    }
+
     /** calculating the total price 
      * @param total
     */
@@ -83,6 +111,23 @@ export default function Cart() {
     for (const productId of cartProducts) {
         const price = products.find((p) => p._id === productId)?.price || 0
         total += price
+    }
+
+    /** check if the global window includes a success message */
+    if (isSuccess) {
+        return (
+            <>
+                <Header />
+                <Center>
+                    <ColumnWrapper>
+                        <CartCard>
+                            <h2>Thanks for your order</h2>
+                            <p>You will be notified when your order is being delivered.</p>
+                        </CartCard>
+                    </ColumnWrapper>
+                </Center>
+            </>
+        )
     }
 
     return (
@@ -153,52 +198,51 @@ export default function Cart() {
                         !!cartProducts?.length > 0 && <CartCard>
                             <h2>Order Information</h2>
                             {/* shipping info and stripe payment action*/}
-                            <form method="POST" action="/api/checkout">
+
+                            <Input type="text"
+                                placeholder="Name"
+                                value={name}
+                                name='name'
+                                onChange={(e) => setName(e.target.value)} />
+                            <Input type="email"
+                                placeholder="Email"
+                                value={email}
+                                name='email'
+                                onChange={(e) => setEmail(e.target.value)} />
+                            <CityPostalCode>
                                 <Input type="text"
-                                    placeholder="Name"
-                                    value={name}
-                                    name='name'
-                                    onChange={(e) => setName(e.target.value)} />
-                                <Input type="email"
-                                    placeholder="Email"
-                                    value={email}
-                                    name='email'
-                                    onChange={(e) => setEmail(e.target.value)} />
-                                <CityPostalCode>
-                                    <Input type="text"
-                                        placeholder="City"
-                                        value={city}
-                                        name='city'
-                                        onChange={(e) => setCity(e.target.value)} />
-                                    <Input type="text"
-                                        placeholder="Postal code"
-                                        value={postalCode}
-                                        name='postcode'
-                                        onChange={(e) => setPostalCode(e.target.value)} />
-                                </CityPostalCode>
+                                    placeholder="City"
+                                    value={city}
+                                    name='city'
+                                    onChange={(e) => setCity(e.target.value)} />
                                 <Input type="text"
-                                    placeholder="Street address"
-                                    value={address}
-                                    name='address'
-                                    onChange={(e) => setAddress(e.target.value)} />
-                                <Input type="text"
-                                    placeholder="Province City State"
-                                    value={province}
-                                    name='province'
-                                    onChange={(e) => setProvince(e.target.value)} />
-                                <Input type="text"
-                                    placeholder="Country"
-                                    value={country}
-                                    name='country'
-                                    onChange={(e) => setCountry(e.target.value)} />
-                                <Buttons
-                                    black
-                                    block
-                                    type='submit'
-                                >
-                                    Continue to payment
-                                </Buttons>
-                            </form>
+                                    placeholder="Postal code"
+                                    value={postalCode}
+                                    name='postalCode'
+                                    onChange={(e) => setPostalCode(e.target.value)} />
+                            </CityPostalCode>
+                            <Input type="text"
+                                placeholder="Street address"
+                                value={streetAddress}
+                                name='streetAddress'
+                                onChange={(e) => setStreetAddress(e.target.value)} />
+                            <Input type="text"
+                                placeholder="Province City State"
+                                value={province}
+                                name='province'
+                                onChange={(e) => setProvince(e.target.value)} />
+                            <Input type="text"
+                                placeholder="Country"
+                                value={country}
+                                name='country'
+                                onChange={(e) => setCountry(e.target.value)} />
+                            <Buttons
+                                black
+                                block
+                                onClick={goToPayment}
+                            >
+                                Continue to payment
+                            </Buttons>
                         </CartCard>
                     }
 

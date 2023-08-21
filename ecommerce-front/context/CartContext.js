@@ -16,13 +16,17 @@ export default function CartContextProvider({ children }) {
         setCartProducts((prev) => {
             const pos = prev.indexOf(productId)
             /** check if the indexOf --> (-1) */
-            if(pos !== -1){
+            if (pos !== -1) {
                 return prev.filter((_, index) => index !== pos);
-            }else{
+            } else {
                 return prev;
             }
-            
+
         })
+    }
+    /** a functionality to clear cart */
+    function clearCart() {
+        setCartProducts([]);
     }
     useEffect(() => {
         /** save the products to local storage on mount */
@@ -38,7 +42,7 @@ export default function CartContextProvider({ children }) {
         }
     }, [])
     return (
-        <CartContext.Provider value={{ cartProducts, setCartProducts, addToProducts, removeProducts }}>{children}</CartContext.Provider>
+        <CartContext.Provider value={{ cartProducts, setCartProducts, addToProducts, removeProducts, clearCart }}>{children}</CartContext.Provider>
     )
 
 
