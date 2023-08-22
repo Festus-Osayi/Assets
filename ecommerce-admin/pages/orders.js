@@ -19,6 +19,7 @@ export default function OrdersPage() {
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Paid</th>
                         <th>Recipient</th>
                         <th>Product</th>
                     </tr>
@@ -34,6 +35,7 @@ export default function OrdersPage() {
                                         new Date(order.createdAt).toLocaleString()
                                     }
                                 </td>
+                                <td className={order.isPaid ? 'text-green-600' : 'text-red-600'}>{order.isPaid ? 'Yes' : 'No'}</td>
                                 <td>
                                     {order.name} {order.email}<br />
                                     {order.city} {order.postalCode} {order.streetAddress} <br />
