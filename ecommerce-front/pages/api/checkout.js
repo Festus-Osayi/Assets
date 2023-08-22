@@ -1,8 +1,8 @@
 import { createConnections } from "@/lib/mongoose";
 import { Orders } from "@/models/orders";
 import { Product } from "@/models/products";
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SK);// stripe modules
+import Stripe from 'stripe'; // stripe modules
+const stripe = new Stripe(process.env.STRIPE_SK); /** include your stripe secret key */
 
 /** end point for checkout */
 export default async function handler(req, res) {
