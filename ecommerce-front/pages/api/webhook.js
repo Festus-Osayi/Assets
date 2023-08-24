@@ -17,7 +17,7 @@ const stripe = new Stripe(process.env.STRIPE_SK); /** include your stripe secret
  * from stripe documentation
  */
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "whsec_d3a1066b3838c37bc12dcefe9a43c8e330dc04e938f4e48d619479e4bd8c8127";
+const endpointSecret = process.env.STRIPE_ENDPOINT_SK;
 export default async function handler(req, res) {
     await createConnections()
     const sig = req.headers['stripe-signature'];

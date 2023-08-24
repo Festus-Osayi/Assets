@@ -30,10 +30,15 @@ const Title = styled(Link)`
 `;
 
 const PriceRow = styled.div`
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: space-between;
   margin-top: 2px;
+  /** media queries for bigger screen */
+  @media screen and (min-width: 768px) {
+    display: flex;
+    gap: 5px;
+  }
 `;
 
 const ProductCardInfo = styled.div`
@@ -41,8 +46,15 @@ const ProductCardInfo = styled.div`
 `;
 
 const Price = styled.div`
-  font-weight: 600;
-  font-size: 1.5rem;
+  font-weight: 400;
+  font-size: 1rem;
+  text-align: right;
+  /** media queries for bigger screen */
+  @media screen and (min-width: 768px) {
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-align: left;
+  }
 `;
 export default function ProductsCards({
   images,
@@ -58,15 +70,19 @@ export default function ProductsCards({
     <ProductWrapper>
       <ProductDetails href={`/products/${_id}`}>
         <div>
-          <ProductCardImages src={images} alt={title} />
+          <ProductCardImages src={images?.[0]} alt={title} />
         </div>
       </ProductDetails>
       <ProductCardInfo>
         <Title href={`/products/${_id}`}>{title}</Title>
         <PriceRow>
           <Price>${price}</Price>
-          <Buttons primary={true} outline onClick={() => addToProducts(_id)}>
-            <Cart />
+          <Buttons
+            block
+            primary={true}
+            outline
+            onClick={() => addToProducts(_id)}
+          >
             Add to cart
           </Buttons>
         </PriceRow>

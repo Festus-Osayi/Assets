@@ -7,48 +7,68 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Table from "@/components/table/Table";
 import Input from "@/components/input/Input";
-import ProductsCards from "@/components/productscards/ProductsCards";
-import { useRouter } from "next/router";
+import { Title } from "@/components/reusable-styles/Title";
+import { WhiteBox } from "@/components/reusable-styles/WhiteBox";
 
 
 const ColumnWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1.3fr .7fr;
+    grid-template-columns: 1fr;
     gap: 40px;
     margin-top: 40px;
+    margin-bottom: 10px;
+    /** media queries for bigger screen */
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1.3fr .7fr
+  }
 `
 
-const CartCard = styled.div`
-background-color: #fff;
-border-radius: 10px;
-padding: 30px;
-`
+
 const Images = styled.img`
+    max-width: 60px;
+    max-height: 60px;
+      /** media queries for bigger screen */
+  @media screen and (min-width: 768px) {
     max-width: 80px;
     max-height: 80px;
+  }
 `
 const CartInfoCell = styled.td`
     padding: 10px 0;
 `
 /** image box */
 const ProductImageBox = styled.div`
-max-width: 100px;
-max-height: 100px;
-padding: 10px;
+width: 70px;
+height: 100px;
+padding: 2px;
 border-radius: 10px;
 border: 1px solid rgba(0, 0, 0, 0.1);
 display: flex;
 align-items: center;
 justify-content: center;
 
+  /** media queries for bigger screen */
+  @media screen and (min-width: 768px) {
+    padding: 10px;
+    width: 100px;
+    height: 100px
+  }
+
 `
 const QuantityLabel = styled.span`
-padding: 0 3px;
+display: block;
+padding: 0 15px;
+  /** media queries for bigger screen */
+  @media screen and (min-width: 768px) {
+    display: inline;
+    padding: 0 10px;
+  }
 `
 const CityPostalCode = styled.div`
 display: flex;
 gap: 5px;
 `
+
 export default function Cart() {
     /*************  application states ************/
     const { cartProducts, addToProducts, removeProducts, clearCart } = useContext(CartContext)
@@ -120,10 +140,10 @@ export default function Cart() {
                 <Header />
                 <Center>
                     <ColumnWrapper>
-                        <CartCard>
+                        <WhiteBox>
                             <h2>Thanks for your order</h2>
                             <p>You will be notified when your order is being delivered.</p>
-                        </CartCard>
+                        </WhiteBox>
                     </ColumnWrapper>
                 </Center>
             </>
@@ -135,8 +155,8 @@ export default function Cart() {
             <Header />
             <Center>
                 <ColumnWrapper>
-                    <CartCard>
-                        <h2>Cart</h2>
+                    <WhiteBox>
+                        <Title>Cart</Title>
                         {
                             !cartProducts.length > 0 &&
                             <h2>Your cart is empty</h2>
@@ -192,10 +212,10 @@ export default function Cart() {
 
                         }
 
-                    </CartCard>
+                    </WhiteBox>
 
                     {
-                        !!cartProducts?.length > 0 && <CartCard>
+                        !!cartProducts?.length > 0 && <WhiteBox>
                             <h2>Order Information</h2>
                             {/* shipping info and stripe payment action*/}
 
@@ -243,7 +263,7 @@ export default function Cart() {
                             >
                                 Continue to payment
                             </Buttons>
-                        </CartCard>
+                        </WhiteBox>
                     }
 
                 </ColumnWrapper>

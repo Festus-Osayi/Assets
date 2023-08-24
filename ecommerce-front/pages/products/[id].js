@@ -1,0 +1,79 @@
+import { Title } from "@/components/reusable-styles/Title";
+import Center from "@/components/center/Center";
+import Header from "@/components/header/Header";
+import { createConnections } from "@/lib/mongoose";
+import { Product } from "@/models/products";
+import styled from "styled-components";
+import { WhiteBox } from "@/components/reusable-styles/WhiteBox";
+import ProductImage from "@/components/productimages/ProductImage";
+import Buttons from "@/components/buttons/Buttons";
+import CartIcons from "@/components/icons/CartIcons";
+import { useContext } from "react";
+import { CartContext } from "@/context/CartContext";
+
+const ColWrapper = styled.div`
+display: grid;
+grid-template-columns: 1fr;
+gap: 40px;
+margin: 40px 0;
+/** media queries for bigger screen */
+  @media screen and (min-width: 768px) {
+    grid-template-columns: .8fr 1.2fr;
+  }
+`
+
+const PriceRow = styled.div`
+display: flex;
+gap: 15px;
+align-items: center;
+`
+const Price = styled.span`
+font-size: 1.4rem;
+`
+
+export default function Products({ products }) {
+    const { addToProducts } = useContext(CartContext)
+    return (
+        <>
+            <Header />
+            <Center>
+                <ColWrapper>
+                    <WhiteBox>
+                        <ProductImage images={products.images} description={products.title} />
+                    </WhiteBox>
+                    <div>
+                        <Title>{products.title}</Title>
+                        {products.description}
+                        <PriceRow>
+                            <div>
+                                <Price>
+                                    ${products.price}
+                                </Price>
+                            </div>
+                            <div>
+                                <Buttons primary onClick={() => addToProducts(products._id)}>
+                                    <CartIcons />
+                                    Add to cart
+                                </Buttons>
+                            </div>
+                        </PriceRow>
+                    </div>
+                </ColWrapper>
+            </Center>
+        </>
+    )
+}
+
+export const getServerSideProps = async (context) => {
+    /** get a product of a specific Id */
+
+    await createConnections()
+    const { id } = context.query
+    const products = await Product.findById(id)
+    return {
+        props: {
+            products: JSON.parse(JSON.stringify(products))
+        }
+    }
+}
+
