@@ -10,6 +10,7 @@ import Buttons from "@/components/buttons/Buttons";
 import CartIcons from "@/components/icons/CartIcons";
 import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
+import FlyingButton from "@/components/reusable-styles/FlyingButton";
 
 const ColWrapper = styled.div`
 display: grid;
@@ -32,7 +33,7 @@ font-size: 1.4rem;
 `
 
 export default function Products({ products }) {
-    const { addToProducts } = useContext(CartContext)
+    
     return (
         <>
             <Header />
@@ -51,10 +52,10 @@ export default function Products({ products }) {
                                 </Price>
                             </div>
                             <div>
-                                <Buttons primary onClick={() => addToProducts(products._id)}>
+                                <FlyingButton main src={products.images[0]} _id={products._id}>
                                     <CartIcons />
                                     Add to cart
-                                </Buttons>
+                                </FlyingButton>
                             </div>
                         </PriceRow>
                     </div>

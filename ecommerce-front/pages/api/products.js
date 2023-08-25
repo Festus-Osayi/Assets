@@ -5,11 +5,19 @@ import { Product } from "@/models/products";
 export default async function products(req, res) {
 
     await createConnections();
-    const { categories, sort, ...otherFilter } = req.query
-    const productQuery = {
-        category: categories.split(',')
+    const { categories, phrase, sort, ...otherFilter } = req.query
+    const [sortField, sortOrder] = (sort || '_id-desc').split('-')
+    const productQuery = {}
+    if (categories) {
+        productQuery.category = categories.split(',')
     }
-    const [sortField, sortOrder] = sort.split('-')
+
+    if (phrase) {
+        productQuery['$or'] = [{
+            title: { $regex: phrase, $options: 'i' },
+            description: { $regex: phrase, $options: 'i' }
+        }]
+    }
 
     /** check if the filter object is 0
      * loop through all key of the (otherFilter)
@@ -21,7 +29,7 @@ export default async function products(req, res) {
             productQuery[`properties.${filterName}`] = otherFilter[filterName]
         })
     }
-
+    
     res.json(await Product.find(productQuery, null, { sort: { [sortField]: sortOrder === 'asc' ? 1 : -1 } }))
 }
 

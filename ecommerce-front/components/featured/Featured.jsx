@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import Center from "../center/Center";
-import Buttons from "../buttons/Buttons";
 import ButtonLinks from "../buttonlinks/ButtonLinks";
 import CartIcons from "../icons/CartIcons";
-import { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import FlyingButton from "../reusable-styles/FlyingButton";
+import { RevealWrapper } from "next-reveal"; // animations
 
 const Bg = styled.div`
   background-color: #222;
@@ -51,7 +50,6 @@ const ButtonsWrapper = styled.div`
   display: flex;
   gap: 8px;
   margin-top: 25px;
-  
 `;
 
 const Images = styled.img`
@@ -65,41 +63,44 @@ const Images = styled.img`
 `;
 
 export default function Featured({ product }) {
-  /** application states */
-  const { addToProducts } = useContext(CartContext);
-
-  /** functionality to add to cart */
-  const addFeaturedToCart = () => {
-    addToProducts(product._id);
-  };
   return (
     <Bg>
       <Center>
         <ColumnsWrapper>
           <Column>
             <div>
-              <Title>{product.title}</Title>
-              <Desc>{product.description}</Desc>
-              {/* <Button primary>Read More</Button> */}
               {/* Add to cart button */}
-              <ButtonsWrapper>
-                <ButtonLinks
-                  href={`/products/${product._id}`}
-                  size="l"
-                  white={1}
-                  outline={1}
-                >
-                  Read more
-                </ButtonLinks>
-                <Buttons size="l" white onClick={addFeaturedToCart}>
-                  <CartIcons />
-                  Add to cart
-                </Buttons>
-              </ButtonsWrapper>
+              <RevealWrapper origin="left" delay={0}>
+                <Title>{product.title}</Title>
+                <Desc>{product.description}</Desc>
+                <ButtonsWrapper>
+                  <ButtonLinks
+                    href={`/products/${product._id}`}
+                    size="l"
+                    white={1}
+                    outline={1}
+                  >
+                    Read more
+                  </ButtonLinks>
+                  <FlyingButton
+                    white={1}
+                    _id={product._id}
+                    src={product.images?.[0]}
+                    main={1}
+                    size="l"
+                  >
+                    <CartIcons />
+                    Add to cart
+                  </FlyingButton>
+                </ButtonsWrapper>
+              </RevealWrapper>
             </div>
           </Column>
           <Column>
-            <Images src={product.images} alt="phones images" />
+            {/* animation */}
+            <RevealWrapper delay={0}>
+              <Images src={product.images} alt={product.title} />
+            </RevealWrapper>
           </Column>
         </ColumnsWrapper>
       </Center>

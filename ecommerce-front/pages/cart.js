@@ -9,6 +9,7 @@ import Table from "@/components/table/Table";
 import Input from "@/components/input/Input";
 import { Title } from "@/components/reusable-styles/Title";
 import { WhiteBox } from "@/components/reusable-styles/WhiteBox";
+import { RevealWrapper } from "next-reveal";
 
 
 const ColumnWrapper = styled.div`
@@ -16,7 +17,7 @@ const ColumnWrapper = styled.div`
     grid-template-columns: 1fr;
     gap: 40px;
     margin-top: 40px;
-    margin-bottom: 10px;
+    
     /** media queries for bigger screen */
   @media screen and (min-width: 768px) {
     grid-template-columns: 1.3fr .7fr
@@ -155,116 +156,124 @@ export default function Cart() {
             <Header />
             <Center>
                 <ColumnWrapper>
-                    <WhiteBox>
-                        <Title>Cart</Title>
-                        {
-                            !cartProducts.length > 0 &&
-                            <h2>Your cart is empty</h2>
-                        }
+                    <RevealWrapper delay={0}>
+                        <WhiteBox>
+                            <Title>Cart</Title>
+                            {
+                                !cartProducts.length > 0 &&
+                                <h2>Your cart is empty</h2>
+                            }
 
-                        {/* cart items tables */}
-                        {
-                            products.length > 0 && (
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            products.map((p) => (
-                                                /** map through all the 
-                                                 * products in the carts and 
-                                                 * render them in the table cell
-                                                 * 
-                                                */
-                                                <tr key={p._id}>
-                                                    <CartInfoCell>
-                                                        <ProductImageBox>
-                                                            <Images src={p.images[0]} alt={p.title} />
-                                                        </ProductImageBox>
-                                                        {p.title}
-                                                    </CartInfoCell>
-                                                    <td>
-                                                        <Buttons onClick={() => lessOfThisProduct(p._id)}>-</Buttons>
-                                                        <QuantityLabel>
-                                                            {cartProducts.filter(id => id === p._id).length}
-                                                        </QuantityLabel>
-                                                        <Buttons onClick={() => moreOfThisProduct(p._id)}>+</Buttons>
-                                                    </td>
-                                                    <td>${cartProducts.filter(id => id === p._id).length * p.price}</td>
-                                                </tr>
+                            {/* cart items tables */}
+                            {
+                                products.length > 0 && (
+                                    <Table>
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                products.map((p) => (
+                                                    /** map through all the 
+                                                     * products in the carts and 
+                                                     * render them in the table cell
+                                                     * 
+                                                    */
+                                                    <tr key={p._id}>
+                                                        <CartInfoCell>
+                                                            <ProductImageBox>
+                                                                <Images src={p.images[0]} alt={p.title} />
+                                                            </ProductImageBox>
+                                                            {p.title}
+                                                        </CartInfoCell>
+                                                        <td>
+                                                            <Buttons onClick={() => lessOfThisProduct(p._id)}>-</Buttons>
+                                                            <QuantityLabel>
+                                                                {cartProducts.filter(id => id === p._id).length}
+                                                            </QuantityLabel>
+                                                            <Buttons onClick={() => moreOfThisProduct(p._id)}>+</Buttons>
+                                                        </td>
+                                                        <td>${cartProducts.filter(id => id === p._id).length * p.price}</td>
+                                                    </tr>
 
-                                            ))
-                                        }
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td>${total}</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            )
+                                                ))
+                                            }
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>${total}</td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                )
 
 
-                        }
+                            }
 
-                    </WhiteBox>
+                        </WhiteBox>
+                    </RevealWrapper>
+
 
                     {
-                        !!cartProducts?.length > 0 && <WhiteBox>
-                            <h2>Order Information</h2>
-                            {/* shipping info and stripe payment action*/}
+                        !!cartProducts?.length > 0 &&
+                        <RevealWrapper delay={100}>
+                            <WhiteBox>
+                                <h2>Order Information</h2>
+                                {/* shipping info and stripe payment action*/}
 
-                            <Input type="text"
-                                placeholder="Name"
-                                value={name}
-                                name='name'
-                                onChange={(e) => setName(e.target.value)} />
-                            <Input type="email"
-                                placeholder="Email"
-                                value={email}
-                                name='email'
-                                onChange={(e) => setEmail(e.target.value)} />
-                            <CityPostalCode>
                                 <Input type="text"
-                                    placeholder="City"
-                                    value={city}
-                                    name='city'
-                                    onChange={(e) => setCity(e.target.value)} />
+                                    placeholder="Name"
+                                    value={name}
+                                    name='name'
+                                    onChange={(e) => setName(e.target.value)} />
+                                <Input type="email"
+                                    placeholder="Email"
+                                    value={email}
+                                    name='email'
+                                    onChange={(e) => setEmail(e.target.value)} />
+                                <CityPostalCode>
+                                    <Input type="text"
+                                        placeholder="City"
+                                        value={city}
+                                        name='city'
+                                        onChange={(e) => setCity(e.target.value)} />
+                                    <Input type="text"
+                                        placeholder="Postal code"
+                                        value={postalCode}
+                                        name='postalCode'
+                                        onChange={(e) => setPostalCode(e.target.value)} />
+                                </CityPostalCode>
                                 <Input type="text"
-                                    placeholder="Postal code"
-                                    value={postalCode}
-                                    name='postalCode'
-                                    onChange={(e) => setPostalCode(e.target.value)} />
-                            </CityPostalCode>
-                            <Input type="text"
-                                placeholder="Street address"
-                                value={streetAddress}
-                                name='streetAddress'
-                                onChange={(e) => setStreetAddress(e.target.value)} />
-                            <Input type="text"
-                                placeholder="Province City State"
-                                value={province}
-                                name='province'
-                                onChange={(e) => setProvince(e.target.value)} />
-                            <Input type="text"
-                                placeholder="Country"
-                                value={country}
-                                name='country'
-                                onChange={(e) => setCountry(e.target.value)} />
-                            <Buttons
-                                black
-                                block
-                                onClick={goToPayment}
-                            >
-                                Continue to payment
-                            </Buttons>
-                        </WhiteBox>
+                                    placeholder="Street address"
+                                    value={streetAddress}
+                                    name='streetAddress'
+                                    onChange={(e) => setStreetAddress(e.target.value)} />
+                                <Input type="text"
+                                    placeholder="Province City State"
+                                    value={province}
+                                    name='province'
+                                    onChange={(e) => setProvince(e.target.value)} />
+                                <Input type="text"
+                                    placeholder="Country"
+                                    value={country}
+                                    name='country'
+                                    onChange={(e) => setCountry(e.target.value)} />
+                                <Buttons
+                                    black
+                                    block
+                                    onClick={goToPayment}
+                                >
+                                    Continue to payment
+                                </Buttons>
+                            </WhiteBox>
+                        </RevealWrapper>
                     }
+
+
 
                 </ColumnWrapper>
             </Center>

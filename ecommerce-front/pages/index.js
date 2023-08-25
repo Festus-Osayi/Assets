@@ -18,7 +18,7 @@ export default function Home({ featuredProduct, newProduct }) {
 
 /** grabbing a product by id, from our database */
 export const getServerSideProps = async () => {
-  const featuredProductId = '64d718e79a50c664cd6312c3'
+  const featuredProductId = '64e504b3003da7a66189ebc9'
   await createConnections()
   const featuredProduct = await Product.findById(featuredProductId)
   const newProduct = await Product.find({}, null, { sort: { '_id': -1 }, limit: 10 })

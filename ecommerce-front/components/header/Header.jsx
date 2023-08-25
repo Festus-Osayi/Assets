@@ -4,10 +4,14 @@ import Center from "../center/Center";
 import { useContext, useState } from "react";
 import { CartContext } from "@/context/CartContext";
 import MenuIcon from "../icons/MenuIcon";
+import SearchIcon from "../icons/SearchIcon";
 
 /** style components */
 const StyleHeader = styled.header`
   background-color: #283046;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 `;
 const Logo = styled(Link)`
   color: #fff;
@@ -46,7 +50,11 @@ const NavLink = styled(Link)`
   display: block;
   color: #aaa;
   text-decoration: none;
+  min-width: 30px;
   padding: 10px 0;
+  svg {
+    height: 20px;
+  }
   @media screen and (min-width: 768px) {
     padding: 0;
   }
@@ -65,6 +73,20 @@ const Menu = styled.button`
     display: none;
   }
 `;
+
+const SideIcons = styled.div`
+  display: flex;
+  align-items: center;
+  a{
+    display: inline-block;
+    min-width: 20px;
+    color: white;
+    svg{
+      width: 14px;
+      height: 14px;
+    }
+  }
+`;
 export default function Header() {
   /** application states */
   const { cartProducts } = useContext(CartContext);
@@ -81,10 +103,15 @@ export default function Header() {
             <NavLink href={"/account"}>Accounts</NavLink>
             <NavLink href={"/cart"}>Cart ({cartProducts.length})</NavLink>
           </StyledNav>
-          {/* HAMBURGER MENU */}
-          <Menu onClick={() => setMobileNavActive((prev) => !prev)}>
-            <MenuIcon />
-          </Menu>
+          <SideIcons>
+            <Link href={"/search"}>
+              <SearchIcon />
+            </Link>
+            {/* HAMBURGER MENU */}
+            <Menu onClick={() => setMobileNavActive((prev) => !prev)}>
+              <MenuIcon />
+            </Menu>
+          </SideIcons>
         </Wrapper>
       </Center>
     </StyleHeader>

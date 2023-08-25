@@ -10,6 +10,7 @@ export const ButtonStyle = css`
   text-decoration: none;
   font-weight: bold;
   font-family: "Poppins", sans-serif;
+  
   svg {
     height: 16px;
   }

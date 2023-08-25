@@ -8,6 +8,8 @@ import { Product } from "@/models/products";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { WhiteBox } from "@/components/reusable-styles/WhiteBox";
+
 
 /** styling */
 const CategoryHeader = styled.div`
@@ -150,9 +152,9 @@ export default function CategoryPage({
                     loadingProducts && <Spinner fullWidth />
                 }
                 {
-                    
+
                     !loadingProducts && <div>
-                        {products.length > 0 ? <ProductsGrid products={products} /> : <div>Sorry, no product found</div>}
+                        {products.length > 0 ? <ProductsGrid products={products} /> : <WhiteBox>Sorry, no product found</WhiteBox>}
                     </div>
                 }
 

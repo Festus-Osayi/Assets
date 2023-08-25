@@ -1,11 +1,18 @@
 import styled from "styled-components";
-import Buttons from "../buttons/Buttons";
+import Buttons, { ButtonStyle } from "../buttons/Buttons";
 import Cart from "../icons/CartIcons";
 import Link from "next/link";
 import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
-
-const ProductWrapper = styled.div``;
+import FlyingButton from "../reusable-styles/FlyingButton";
+import { primary } from "@/lib/color";
+const ProductWrapper = styled.div`
+button{
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+`;
 const ProductDetails = styled(Link)`
   background-color: #fff;
   padding: 20px;
@@ -56,6 +63,7 @@ const Price = styled.div`
     text-align: left;
   }
 `;
+
 export default function ProductsCards({
   images,
   _id,
@@ -63,8 +71,7 @@ export default function ProductsCards({
   description,
   price,
 }) {
-  /** application states */
-  const { addToProducts } = useContext(CartContext);
+ 
   /** Products Cards */
   return (
     <ProductWrapper>
@@ -77,14 +84,10 @@ export default function ProductsCards({
         <Title href={`/products/${_id}`}>{title}</Title>
         <PriceRow>
           <Price>${price}</Price>
-          <Buttons
-            block
-            primary={true}
-            outline
-            onClick={() => addToProducts(_id)}
-          >
+
+          <FlyingButton src={images?.[0]} _id={_id}>
             Add to cart
-          </Buttons>
+          </FlyingButton>
         </PriceRow>
       </ProductCardInfo>
     </ProductWrapper>
