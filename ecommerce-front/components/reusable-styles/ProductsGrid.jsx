@@ -9,10 +9,9 @@ const StyledProductGrid = styled.div`
   /** media queries for bigger screen */
   @media screen and (min-width: 768px) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    
   }
 `;
-export default function ProductsGrid({ products }) {
+export default function ProductsGrid({ products, wishedProducts }) {
   return (
     <StyledProductGrid interval={100}>
       {products.length > 0 &&
@@ -22,7 +21,10 @@ export default function ProductsGrid({ products }) {
            * components *
            */
           <RevealWrapper key={product._id} delay={index * 50}>
-            <ProductsCards {...product} />
+            <ProductsCards
+              {...product}
+              wished={wishedProducts?.includes(product._id)}
+            />
           </RevealWrapper>
         ))}
     </StyledProductGrid>

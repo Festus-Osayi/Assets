@@ -1,17 +1,16 @@
 import styled from "styled-components";
-import Buttons, { ButtonStyle } from "../buttons/Buttons";
-import Cart from "../icons/CartIcons";
 import Link from "next/link";
-import { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import { useState } from "react";
 import FlyingButton from "../reusable-styles/FlyingButton";
-import { primary } from "@/lib/color";
+import HeartOutline from "../icons/HeartOutline";
+import HeartSolid from "../icons/HeartSolid";
+import axios from "axios";
 const ProductWrapper = styled.div`
-button{
-  width: 100%;
-  text-align: center;
-  justify-content: center;
-}
+  button {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
 `;
 const ProductDetails = styled(Link)`
   background-color: #fff;
@@ -22,6 +21,8 @@ const ProductDetails = styled(Link)`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  position: relative;
+  padding: 10px;
 `;
 const ProductCardImages = styled.img`
   max-width: 100%;
@@ -64,19 +65,63 @@ const Price = styled.div`
   }
 `;
 
+const WishedListButton = styled.button`
+  border: none;
+  width: 40px !important;
+  height: 40px;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  cursor: pointer;
+  ${(props) =>
+    props.wished
+      ? `
+  color: red;
+  `
+      : `   color: black;
+      `}
+
+  svg {
+    width: 16px;
+  }
+`;
+
 export default function ProductsCards({
   images,
   _id,
   title,
   description,
   price,
+  wished = false,
+  onRemoveFromWishList = () => {},
 }) {
- 
+  /*************  application states ************/
+  const [isWish, setIsWish] = useState(wished);
   /** Products Cards */
+
+  /** functionality to add to wishlist */
+  const handleAddToWishList = (e) => {
+    e.preventDefault();
+    const nextValue = !isWish;
+    if(!nextValue && onRemoveFromWishList){
+      onRemoveFromWishList(_id);
+    }
+    axios
+      .post("/api/wishlist", {
+        product: _id,
+      })
+      .then(() => {});
+    setIsWish(nextValue);
+  };
   return (
     <ProductWrapper>
       <ProductDetails href={`/products/${_id}`}>
         <div>
+          <WishedListButton wished={isWish} onClick={handleAddToWishList}>
+            {isWish ? <HeartSolid /> : <HeartOutline />}
+          </WishedListButton>
           <ProductCardImages src={images?.[0]} alt={title} />
         </div>
       </ProductDetails>

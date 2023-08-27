@@ -10,6 +10,7 @@ import Input from "@/components/input/Input";
 import { Title } from "@/components/reusable-styles/Title";
 import { WhiteBox } from "@/components/reusable-styles/WhiteBox";
 import { RevealWrapper } from "next-reveal";
+import { useSession } from "next-auth/react";
 
 
 const ColumnWrapper = styled.div`
@@ -65,7 +66,7 @@ padding: 0 15px;
     padding: 0 10px;
   }
 `
-const CityPostalCode = styled.div`
+export const CityPostalCode = styled.div`
 display: flex;
 gap: 5px;
 `
@@ -82,6 +83,7 @@ export default function Cart() {
     const [province, setProvince] = useState('')
     const [country, setCountry] = useState('')
     const [isSuccess, setIsSuccess] = useState(false)
+    const { data: session } = useSession()
     /*********************************************/
     useEffect(() => {
         if (cartProducts.length > 0) {
@@ -101,7 +103,30 @@ export default function Cart() {
             setIsSuccess(true);
             clearCart();
         }
+
     }, []);
+
+    /**sessions*/
+    useEffect(() => {
+        /** check to see if the user is logged in or not*/
+        if (!session) {
+            return;
+        }
+        /** get the endpoint from (api/address) 
+         * prefill the form in the cart page with
+         * the data returned
+         */
+        axios.get('/api/address').then((res) => {
+            setName(res.data.name)
+            setEmail(res.data.email)
+            setCity(res.data.city)
+            setPostalCode(res.data.postalCode)
+            setStreetAddress(res.data.streetAddress)
+            setProvince(res.data.province)
+            setCountry(res.data.country)
+
+        })
+    }, [session])
     /** functionality to add more products */
     const moreOfThisProduct = (id) => {
         addToProducts(id)
