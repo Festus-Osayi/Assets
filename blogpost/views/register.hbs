@@ -28,14 +28,22 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <input class="form-control"  type="password" name="password" placeholder="password" required>
+                    <input 
+                    class="form-control"  
+                    type="password" 
+                    name="password" 
+                    placeholder="password" 
+                    required
+                    pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$"
+                    title="user password must contain, at least one uppercase letter, a digit, and at least one special symbol or character"
+                    >
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                     <input class="form-control"  type="password" name="password2" placeholder="Confirm Password" required>
+                     <input class="form-control"  type="password" name="password2" placeholder="Confirm Password">
                 </div>
             </div>
         </div>
