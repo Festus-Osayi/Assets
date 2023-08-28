@@ -1,8 +1,6 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const connection = {
-    database_connection_string: "mongodb+srv://festusokundia129:IQjDFanDb57vs02e@senecaweb.n8kypig.mongodb.net/web322_app"
-}
+require('dotenv').config()
 
 const userSchema = new mongoose.Schema({
     userName: {
@@ -28,7 +26,7 @@ let User;
 module.exports.initialize = function () {
 
     return new Promise(function (resolve, reject) {
-        let db = mongoose.createConnection(connection.database_connection_string, { useNewUrlParser: true });
+        let db = mongoose.createConnection(process.env.MONGO_URL, { useNewUrlParser: true });
         db.on('error', (err) => {
             reject(err); // reject the promise with the provided error
         });

@@ -1,5 +1,5 @@
 'use strict'
-/********************************************************************************* * WEB322 – Assignment 06 * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part of this * assignment has been copied manually or electronically from any other source (including web sites) or * distributed to other students. * * Name: Festus Osayi Student ID: 170276216 Date: 04-22-2023 * * Cyclic Web App URL: https://long-blue-donkey-wig.cyclic.app * * GitHub Repository URL: https://github.com/Festus-Osayi/Web322-assignment-06* ********************************************************************************/
+
 const HTTP_PORT = process.env.PORT || 8080;
 const express = require("express");
 const multer = require('multer');
@@ -8,11 +8,11 @@ const streamifier = require('streamifier');
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser');
 const blogData = require('./blog-service')
-const path = require('path')
 const app = express();
 const stripJs = require('strip-js');
 const authData = require('./auth-service')
 const clientSessions = require('client-sessions')
+require('dotenv').config()
 
 
 
@@ -45,7 +45,7 @@ function ensureLogin(req, res, next) {
 // Setup client-sessions
 app.use(clientSessions({
     cookieName: "session", // this is the object name that will be added to 'req'
-    secret: "web322_FestusOsayi_web322", // this should be a long un-guessable string.
+    secret: process.env.CLIENT_SESSIONS_SK, // this should be a long un-guessable string.
     duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
     activeDuration: 1000 * 60 // the session will be extended by this many ms each request (1 minute)
 }));
@@ -267,9 +267,9 @@ app.get('/categories', ensureLogin, (req, res) => {
 // This enables us to store every file upload in our dashboard
 // instead of our local file storage.
 cloudinary.config({
-    cloud_name: 'dv75qktoz',
-    api_key: '389826386351176',
-    api_secret: 'OSTlNpj6NEXtDmZLpO1W7LuDi7c',
+    cloud_name: process.env.CLOUDINARY_NAME, /**include your cloud name */
+    api_key: process.env.CLOUDINARY_API_KEY, /**include your Api Key */
+    api_secret: process.env.CLOUDINARY_API_SK, /**include your Api secret */
     secure: true
 });
 
@@ -417,7 +417,7 @@ app.post('/register', (req, res) => {
 
 // set the value of the client's "User-Agent" to the request body, ie
 app.post('/login', (req, res) => {
-     req.body.userAgent = req.get('User-Agent')
+    req.body.userAgent = req.get('User-Agent')
 
     // invoking the authData.CheckUser(userData) method with the POST data
     authData.checkUser(req.body).then((user) => {

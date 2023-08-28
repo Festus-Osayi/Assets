@@ -1,10 +1,14 @@
+<link rel="stylesheet" href="/css/main.css" />
 <div class="row">
   <div class="col-md-12">
     <div class="controller">
       <h2>Categories</h2>
-      <button class="overriden"><a href="/categories/add" class="btn btn-success pull-right">Add Category</a></button>
+      <button class="overriden"><a
+          href="/categories/add"
+          class="btn btn-success pull-right"
+        >Add Category</a></button>
     </div>
-    
+
     <hr />
     <div class="table-responsive">
       <table class="table">
@@ -14,23 +18,28 @@
             <th>Category Name</th>
           </tr>
         </thead>
-          <tbody>
-            {{#each categories}}
+        <tbody>
+          {{#each categories}}
             <tr>
               <td><a href="/posts?category={{this.id}}">{{this.id}}</a></td>
-              <td><a href="/posts?category={{this.id}}">{{this.category}}</a></td>
-              <td><a class="btn btn-danger" href="categories/delete/{{this.id}}">remove</a></td>
+              <td><a
+                  href="/posts?category={{this.id}}"
+                >{{this.category}}</a></td>
+              <td><a
+                  class="btn btn-danger"
+                  href="categories/delete/{{this.id}}"
+                >remove</a></td>
             </tr>
-            
-            {{/each}}
-          </tbody>
+
+          {{/each}}
+        </tbody>
       </table>
 
     </div>
     {{#unless posts}}
-        <div class="col-md-12 text-center">
+      <div class="col-md-12 text-center">
         <strong>{{message}}</strong>
-        </div>
-  {{/unless}}
+      </div>
+    {{/unless}}
   </div>
 </div>

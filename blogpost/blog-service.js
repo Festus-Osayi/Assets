@@ -1,11 +1,12 @@
 
 const Sequelize = require("sequelize");
+require('dotenv').config()
 let exp = module.exports
 
 let sequelize = new Sequelize(
-    "oowbogjv",
-    "oowbogjv",
-    "3a9fGnJ8HkINuHiPcfS6lLHtBPDwuZEI",
+    process.env.SEQUELIZE_USER, /** your elephant sql username */
+    process.env.SEQUELIZE_USER, /** your elephant sql username */
+    process.env.SEQUELIZE_PASSWORD, /** your elephant sql password */
     {
         host: "isilo.db.elephantsql.com",
         dialect: "postgres",
@@ -212,7 +213,7 @@ exp.deletePostById = (id) => {
                 resolve(data);
             })
             .catch(() => {
-                reject({message: "Mission abort! unable to delete post, with the specified id"});
+                reject({ message: "Mission abort! unable to delete post, with the specified id" });
             });
     });
 };
