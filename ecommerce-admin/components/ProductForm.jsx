@@ -25,11 +25,14 @@ function ProductForm({
   const [productProperties, setProductProperties] = useState(
     assignedProperties || {}
   );
+  const [isCategoriesLoading, setIsCategoriesLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    setIsCategoriesLoading(true);
     axios.get("/api/categories").then((result) => {
       setCategories(result.data);
+      setIsCategoriesLoading(false);
     });
   }, []);
 
@@ -141,10 +144,16 @@ function ProductForm({
               </option>
             ))}
         </select>
+        {/* spinners */}
+        {
+          isCategoriesLoading && (
+            <Spinners/>
+          )
+        }
         {/* render all the products properties */}
         {propertiesToFill.length > 0 &&
-          propertiesToFill.map((p) => (
-            <div className="" key={p.name}>
+          propertiesToFill.map((p, index) => (
+            <div className="" key={index}>
               <div>{p.name[0].toUpperCase() + p.name.slice(1)}</div>
               <div>
                 <select
@@ -171,7 +180,10 @@ function ProductForm({
             {images &&
               images.length > 0 &&
               images.map((links) => (
-                <div key={links} className="h-24 bg-white p-4 shadow-sm rounded-sm border border-gray-200">
+                <div
+                  key={links}
+                  className="h-24 bg-white p-4 shadow-sm rounded-sm border border-gray-200"
+                >
                   <picture>
                     <img src={links} alt="pics" className="rounded-lg " />
                   </picture>

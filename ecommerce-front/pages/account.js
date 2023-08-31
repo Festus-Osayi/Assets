@@ -12,6 +12,9 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import Spinner from "@/components/spinner/Spinner";
 import ProductsCards from "@/components/productscards/ProductsCards";
+import Tabs from "@/components/tabs/Tabs";
+import SingleOrder from "@/components/orderItems/SingleOrder";
+import { useRouter } from "next/router";
 
 /** styling */
 const ColumnWrapper = styled.div`
@@ -36,6 +39,7 @@ gap: 40px;
 export default function AccountPage() {
 
     const { data: session } = useSession()
+    
     /*************  application states ************/
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -47,13 +51,17 @@ export default function AccountPage() {
     const [isAddressLoading, setIsAddressLoading] = useState(true)
     const [isWishListLoading, setIsWishListLoading] = useState(true)
     const [wishedList, setWishedList] = useState([])
+    const [activeTabs, setActiveTabs] = useState('Orders')
+    const [orders, setOrders] = useState([])
+    const [isOrderLoading, setIsOrderLoading] = useState(true)
     /*********************************************/
-
+    const router = useRouter()
     /** functionality for logout */
     async function logout() {
         await signOut({
-            callbackUrl: process.env.NEXT_PUBLIC_URL,
+            callbackUrl: process.env.NEXT_PUBLIC_URL
         });
+
     }
 
     /** functionality for login */
@@ -75,14 +83,15 @@ export default function AccountPage() {
 
     /** fetch all the data on mount */
     useEffect(() => {
-
+        /** check if the user is login or not */
+        if (!session) {
+            return;
+        }
+        setIsWishListLoading(false)
+        setIsAddressLoading(false)
+        setIsOrderLoading(false)
         axios.get('/api/address').then((res) => {
-            /** check if the user is login or not */
-            if (!session) {
-                return;
-            }
-            setIsWishListLoading(false)
-            setIsAddressLoading(false)
+
             /** update the state with response from server */
             setName(res.data.name)
             setEmail(res.data.email)
@@ -97,11 +106,12 @@ export default function AccountPage() {
         axios.get('/api/wishlist').then((res) => {
             setWishedList(res.data.map((wp) => wp.product))
             setIsWishListLoading(true)
-        }
+        })
 
-
-
-        )
+        axios.get('/api/orders').then((res) => {
+            setOrders(res.data)
+            setIsOrderLoading(true)
+        })
 
     }, [session])
 
@@ -113,105 +123,128 @@ export default function AccountPage() {
     }
     return (
         <>
-            <Header />
-            <Center>
-                <ColumnWrapper>
-                    <div>
-                        <RevealWrapper delay={0}>
-                            <WhiteBox>
+            <>
+                <Header />
+                <Center>
+                    <ColumnWrapper>
+                        <div>
 
-                                <h2>Wishlist</h2>
-                                {/* map though all the wished list */}
-                                {/* check if the user is login or not */}
-                                <WisHListGrid>
-
-                                    {
-                                        !isWishListLoading && <Spinner fullWidth={true} />
-                                    }
-                                    {
-                                        isWishListLoading && wishedList.length > 0 ? wishedList.map((wp) => (
-                                            <ProductsCards key={`${wp._id}`} {...wp} wished={true} onRemoveFromWishList={() => removeWishList(wp._id)} />
-                                        ))
-                                            : session &&
-                                            <p>Your wish list is empty</p>
-                                    }
-
-                                </WisHListGrid>
-                                {!session && <p>Please login to add product to your wish list.</p>
-                                }
-                            </WhiteBox>
-                        </RevealWrapper>
-                    </div>
-                    <div>
-                        <RevealWrapper delay={100}>
-                            <WhiteBox>
-                                <h2>{session ? 'Account details' : 'Login'}</h2>
-                                {/* shipping info and a preloader*/}
-                                {
-                                    !isAddressLoading && <Spinner fullWidth={true} />
-                                }
-                                {
-                                    isAddressLoading && session && <>
-                                        <Input type="text"
-                                            placeholder="Name"
-                                            value={name}
-                                            name='name'
-                                            onChange={(e) => setName(e.target.value)} />
-                                        <Input type="email"
-                                            placeholder="Email"
-                                            value={email}
-                                            name='email'
-                                            onChange={(e) => setEmail(e.target.value)} />
-                                        <CityPostalCode>
+                            <RevealWrapper delay={0}>
+                                <WhiteBox>
+                                    <Tabs
+                                        tabs={['Orders', 'Wishlist']}
+                                        active={activeTabs}
+                                        onChange={setActiveTabs}
+                                    />
+                                    {activeTabs === 'Orders' && (
+                                        <>
+                                            {!isOrderLoading && (
+                                                <Spinner fullWidth={true} />
+                                            )}
+                                            {isOrderLoading && (
+                                                <div>
+                                                    {orders.length === 0 && (
+                                                        <p>Login to see your orders</p>
+                                                    )}
+                                                    {orders.length > 0 && orders.map((o, index) => (
+                                                        <SingleOrder key={index}  {...o} />
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                    {activeTabs === 'Wishlist' && (
+                                        <>
+                                            {!isWishListLoading && (
+                                                <Spinner fullWidth={true} />
+                                            )}
+                                            {isWishListLoading && (
+                                                <>
+                                                    <WisHListGrid>
+                                                        {wishedList.length > 0 && wishedList.map(wp => (
+                                                            <ProductsCards key={wp._id} {...wp} wished={true} onRemoveFromWishlist={removeWishList} />
+                                                        ))}
+                                                    </WisHListGrid>
+                                                    {wishedList.length === 0 && (
+                                                        <>
+                                                            {session && (
+                                                                <p>Your wishlist is empty</p>
+                                                            )}
+                                                            {!session && (
+                                                                <p>Login to add products to your wishlist</p>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </>
+                                            )}
+                                        </>
+                                    )}
+                                </WhiteBox>
+                            </RevealWrapper>
+                        </div>
+                        <div>
+                            <RevealWrapper delay={100}>
+                                <WhiteBox>
+                                    <h2>{session ? 'Account details' : 'Login'}</h2>
+                                    {!isAddressLoading && (
+                                        <Spinner fullWidth={true} />
+                                    )}
+                                    {isAddressLoading && session && (
+                                        <>
                                             <Input type="text"
-                                                placeholder="City"
-                                                value={city}
-                                                name='city'
-                                                onChange={(e) => setCity(e.target.value)} />
+                                                placeholder="Name"
+                                                value={name}
+                                                name="name"
+                                                onChange={ev => setName(ev.target.value)} />
                                             <Input type="text"
-                                                placeholder="Postal code"
-                                                value={postalCode}
-                                                name='postalCode'
-                                                onChange={(e) => setPostalCode(e.target.value)} />
-                                        </CityPostalCode>
-                                        <Input type="text"
-                                            placeholder="Street address"
-                                            value={streetAddress}
-                                            name='streetAddress'
-                                            onChange={(e) => setStreetAddress(e.target.value)} />
-                                        <Input type="text"
-                                            placeholder="Province City State"
-                                            value={province}
-                                            name='province'
-                                            onChange={(e) => setProvince(e.target.value)} />
-                                        <Input type="text"
-                                            placeholder="Country"
-                                            value={country}
-                                            name='country'
-                                            onChange={(e) => setCountry(e.target.value)} />
-                                        <Buttons
-                                            black
-                                            block
-                                            onClick={saveAddress}
-                                        >
-                                            Save
-                                        </Buttons>
-                                        <hr />
-                                    </>
-
-                                }
-
-                                {/* sessions */}
-                                {
-                                    session ? (<Buttons primary onClick={logout}>Logout</Buttons>) : (<Buttons primary onClick={handleLogin}>Login with google</Buttons>)
-                                }
-                            </WhiteBox>
-                        </RevealWrapper>
-                    </div>
-                </ColumnWrapper>
-            </Center>
+                                                placeholder="Email"
+                                                value={email}
+                                                name="email"
+                                                onChange={ev => setEmail(ev.target.value)} />
+                                            <CityPostalCode>
+                                                <Input type="text"
+                                                    placeholder="City"
+                                                    value={city}
+                                                    name="city"
+                                                    onChange={ev => setCity(ev.target.value)} />
+                                                <Input type="text"
+                                                    placeholder="Postal Code"
+                                                    value={postalCode}
+                                                    name="postalCode"
+                                                    onChange={ev => setPostalCode(ev.target.value)} />
+                                            </CityPostalCode>
+                                            <Input type="text"
+                                                placeholder="Street Address"
+                                                value={streetAddress}
+                                                name="streetAddress"
+                                                onChange={ev => setStreetAddress(ev.target.value)} />
+                                            <Input type="text"
+                                                placeholder="Country"
+                                                value={country}
+                                                name="country"
+                                                onChange={ev => setCountry(ev.target.value)} />
+                                            <Buttons black block
+                                                onClick={saveAddress}>
+                                                Save
+                                            </Buttons>
+                                            <hr />
+                                        </>
+                                    )}
+                                    {session && (
+                                        <Buttons primary onClick={logout}>Logout</Buttons>
+                                    )}
+                                    {!session && (
+                                        <Buttons primary onClick={handleLogin}>Login with Google</Buttons>
+                                    )}
+                                </WhiteBox>
+                            </RevealWrapper>
+                        </div>
+                    </ColumnWrapper>
+                </Center>
+            </>
 
         </>
+
     )
 }
 

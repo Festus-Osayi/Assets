@@ -51,10 +51,11 @@ export default async function handler(req, res) {
         // ... handle other event types
         default:
             console.log(`Unhandled event type ${event.type}`);
+            break;
     }
 
     // Return a 200 response to acknowledge receipt of the event
-    res.status(200).send('ok');
+    return res.status(200).send('ok');
 }
 
 export const config = {

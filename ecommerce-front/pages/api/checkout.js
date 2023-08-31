@@ -1,7 +1,9 @@
 import { createConnections } from "@/lib/mongoose";
 import { Orders } from "@/models/orders";
 import { Product } from "@/models/products";
+import { getServerSession } from "next-auth";
 import Stripe from 'stripe'; // stripe modules
+import { authOptions } from "./auth/[...nextauth]";
 const stripe = new Stripe(process.env.STRIPE_SK); /** include your stripe secret key */
 
 /** end point for checkout */
@@ -48,6 +50,8 @@ export default async function handler(req, res) {
     }
     /** taking the user orders and saving them in the database */
     try {
+        /** user session */
+        const session = await getServerSession(req, res, authOptions)
         // Create a PaymentIntent with the order amount and currency
         const orderDoc = await Orders.create({
             line_items,
@@ -58,10 +62,11 @@ export default async function handler(req, res) {
             streetAddress,
             province,
             country,
-            paid: false
+            paid: false,
+            userEmail: session?.user?.email
         })
         /** adding stripe payment gate way */
-        const session = await stripe.checkout.sessions.create({
+        const stripeSession = await stripe.checkout.sessions.create({
             line_items,
             mode: 'payment',
             customer_email: email,
@@ -72,7 +77,7 @@ export default async function handler(req, res) {
         })
 
         res.json({
-            url: session?.url
+            url: stripeSession?.url
         })
 
     } catch (err) {

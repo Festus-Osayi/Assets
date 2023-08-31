@@ -17,13 +17,13 @@ export default async function handler(req, res) {
                 const wishDoc = await WishedProducts.findOne({ userEmail: session?.user.email, product })
                 if (wishDoc) {
                     await WishedProducts.findByIdAndDelete(wishDoc._id)
-                    res.json(`Product removed from your wishlist`)
+                    return res.json(`Product removed from your wishlist`)
                 } else {
                     await WishedProducts.create({
                         userEmail: session?.user.email,
                         product
                     })
-                    res.json(`Product added to your wishlist`)
+                    return res.json(`Product added to your wishlist`)
                 }
             }
             catch (err) {
@@ -39,6 +39,10 @@ export default async function handler(req, res) {
             catch (err) {
                 console.log('Error in GET /api/wishlist', err)
             }
+            break;
+
+        default:
+            res.status(401).send(`Method ${method} not allowed`)
             break;
 
     }

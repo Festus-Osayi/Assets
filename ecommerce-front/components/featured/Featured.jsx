@@ -30,6 +30,8 @@ const ColumnsWrapper = styled.div`
   grid-template-columns: 1fr;
   gap: 40px;
   div:nth-child(1) {
+    margin-right: auto;
+    margin-left: auto;
     order: 2;
   }
   /** media queries for bigger screen */
@@ -62,6 +64,20 @@ const Images = styled.img`
   }
 `;
 
+const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ImageColumn = styled(Column)`
+  & > div {
+    width: 100%;
+  }
+`;
+
+const ContentWrapper = styled.div`
+`
 export default function Featured({ product }) {
   return (
     <Bg>
@@ -71,37 +87,41 @@ export default function Featured({ product }) {
             <div>
               {/* Add to cart button */}
               <RevealWrapper origin="left" delay={0}>
-                <Title>{product.title}</Title>
-                <Desc>{product.description}</Desc>
-                <ButtonsWrapper>
-                  <ButtonLinks
-                    href={`/products/${product._id}`}
-                    size="l"
-                    white={1}
-                    outline={1}
-                  >
-                    Read more
-                  </ButtonLinks>
-                  <FlyingButton
-                    white={1}
-                    _id={product._id}
-                    src={product.images?.[0]}
-                    main={1}
-                    size="l"
-                  >
-                    <CartIcons />
-                    Add to cart
-                  </FlyingButton>
-                </ButtonsWrapper>
+                <ContentWrapper>
+                  <Title>{product.title}</Title>
+                  <Desc>{product.description}</Desc>
+                  <ButtonsWrapper>
+                    <ButtonLinks
+                      href={`/products/${product._id}`}
+                      size="l"
+                      white={1}
+                      outline={1}
+                    >
+                      Read more
+                    </ButtonLinks>
+                    <FlyingButton
+                      white={1}
+                      _id={product._id}
+                      src={product.images?.[0]}
+                      main={1}
+                      size="l"
+                    >
+                      <CartIcons />
+                      Add to cart
+                    </FlyingButton>
+                  </ButtonsWrapper>
+                </ContentWrapper>
               </RevealWrapper>
             </div>
           </Column>
-          <Column>
+          <ImageColumn>
             {/* animation */}
             <RevealWrapper delay={0}>
-              <Images src={product.images} alt={product.title} />
+              <ImageWrapper>
+                <Images src={product.images?.[0]} alt={product.title} />
+              </ImageWrapper>
             </RevealWrapper>
-          </Column>
+          </ImageColumn>
         </ColumnsWrapper>
       </Center>
     </Bg>

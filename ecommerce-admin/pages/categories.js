@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout"
+import Spinners from "@/components/Spinners"
 import axios from "axios"
 import { set } from "mongoose"
 import { useEffect, useState } from "react"
@@ -11,6 +12,7 @@ export function Categories({ swal }) {
     const [categories, setCategories] = useState([])
     const [parentCategory, setParentCategory] = useState('')
     const [properties, setProperties] = useState([])
+    const [isLoadingCategories, setIsLoadingCategories] = useState(false)
 
     useEffect(() => {
         fetchCategories()
@@ -18,8 +20,10 @@ export function Categories({ swal }) {
 
     /** fetch categories */
     const fetchCategories = () => {
+        setIsLoadingCategories(true);
         axios.get('/api/categories').then((res) => {
             setCategories(res.data)
+            setIsLoadingCategories(false)
         })
     }
     /** function to save a category */
@@ -65,10 +69,10 @@ export function Categories({ swal }) {
         setEditedCategory(category)
         setName(category.name)
         setParentCategory(category.parent?._id)
-        setProperties(category.properties.map(({name, values})=> ({
+        setProperties(category.properties.map(({ name, values }) => ({
             name, values: values.join(',')
         })))
-        
+
 
     }
 
@@ -90,7 +94,12 @@ export function Categories({ swal }) {
             if (result.isConfirmed) {
                 try {
                     const { _id } = category;
-                    await axios.delete(`/api/categories?_id=${_id}`);
+                    await axios.delete(`/api/categories?_id=${_id}`).then(()=>{
+                        swal.fire({
+                            title: `${category.name} Deleted Successfully`,
+                            icon: 'success'
+                        })
+                    });
                     fetchCategories();
                 } catch (err) {
                     console.log('error deleting category');
@@ -177,7 +186,7 @@ export function Categories({ swal }) {
                                     value={property.values}
                                     type="text" placeholder="values, comma seperated"
                                     onChange={(e) => handlePropertyValuesChange(index, property, e.target.value)}
-                                    
+
                                 />
                                 <button type="button" onClick={() => removeProperty(index)} className="btn-red">Remove</button>
                             </div>
@@ -217,6 +226,17 @@ export function Categories({ swal }) {
                     </thead>
                     {/** loop through the categories and render them */}
                     <tbody>
+                        {
+                            isLoadingCategories && (
+                                <tr>
+                                    <td colSpan='3'>
+                                        <div className="py-4">
+                                            <Spinners fullWidth={true} />
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        }
                         {categories && categories.length > 0 && categories.map((category) => (
 
                             <tr key={category._id}>

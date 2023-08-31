@@ -11,9 +11,9 @@ export default async function handler(req, res) {
     if (req.method === 'PUT') {
 
         if (address) {
-            res.json(await Address.findByIdAndUpdate(address._id, req.body))
+            return res.json(await Address.findByIdAndUpdate(address._id, req.body))
         } else {
-            res.json(await Address.create({ userEmail: session?.user?.email, ...req.body }))
+            return res.json(await Address.create({ userEmail: session?.user?.email, ...req.body }))
         }
     }
 
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         /** grab the user session */
         // const { user } = getServerSession(req, res, authOptions)
         // const address = await Address.findOne({ userEmail: user?.email })
-        res.json(address)
+        return res.json(address)
     }
 
 

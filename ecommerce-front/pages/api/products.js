@@ -30,6 +30,6 @@ export default async function products(req, res) {
         })
     }
     
-    res.json(await Product.find(productQuery, null, { sort: { [sortField]: sortOrder === 'asc' ? 1 : -1 } }))
+    return res.json(await Product.find(productQuery, null, { sort: { [sortField]: sortOrder === 'asc' ? 1 : -1 } }))
 }
 
