@@ -4,6 +4,7 @@ import { Product } from "@/models/products";
 import { getServerSession } from "next-auth";
 import Stripe from 'stripe'; // stripe modules
 import { authOptions } from "./auth/[...nextauth]";
+import { Settings } from "@/models/settings";
 const stripe = new Stripe(process.env.STRIPE_SK); /** include your stripe secret key */
 
 /** end point for checkout */
@@ -49,40 +50,52 @@ export default async function handler(req, res) {
 
     }
     /** taking the user orders and saving them in the database */
-    try {
-        /** user session */
-        const session = await getServerSession(req, res, authOptions)
-        // Create a PaymentIntent with the order amount and currency
-        const orderDoc = await Orders.create({
-            line_items,
-            name,
-            email,
-            city,
-            postalCode,
-            streetAddress,
-            province,
-            country,
-            paid: false,
-            userEmail: session?.user?.email
-        })
-        /** adding stripe payment gate way */
-        const stripeSession = await stripe.checkout.sessions.create({
-            line_items,
-            mode: 'payment',
-            customer_email: email,
-            success_url: `${process.env.PUBLIC_URL}/cart?success=1`,
-            cancel_url: `${process.env.PUBLIC_URL}/cart?cancel=1`,
-            metadata: { orderId: orderDoc._id?.toString() }
+    /** user session */
+    const session = await getServerSession(req, res, authOptions)
+    // Create a PaymentIntent with the order amount and currency
+    const orderDoc = await Orders.create({
+        line_items,
+        name,
+        email,
+        city,
+        postalCode,
+        streetAddress,
+        province,
+        country,
+        paid: false,
+        userEmail: session?.user?.email
+    })
+    /** adding stripe payment gate way */
+    const shippingFeeSetting = await Settings.findOne({ name: 'shippingFee' });
+    const shippingFeeCents = parseInt(shippingFeeSetting.value || '0') * 100;
 
-        })
 
-        res.json({
-            url: stripeSession?.url
-        })
 
-    } catch (err) {
-        res.json({ message: "error creating an order" })
-    }
+    const stripeSession = await stripe.checkout.sessions.create({
+        line_items,
+        mode: 'payment',
+        customer_email: email,
+        success_url: `${process.env.PUBLIC_URL}/cart?success=1`,
+        cancel_url: `${process.env.PUBLIC_URL}/cart?cancel=1`,
+        metadata: { orderId: orderDoc._id?.toString() },
+        shipping_options: [
+            {
+                shipping_rate_data: {
+                    display_name: 'shipping fee',
+                    type: 'fixed_amount',
+                    fixed_amount: { amount: shippingFeeCents, currency: 'CAD' },
+                },
+            }
+        ],
+
+
+    })
+
+    res.json({
+        url: stripeSession?.url
+    })
+
+
 
 
 }

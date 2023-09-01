@@ -143,9 +143,12 @@ export default function AccountPage() {
                                             )}
                                             {isOrderLoading && (
                                                 <div>
-                                                    {orders.length === 0 && (
+                                                    {orders.length === 0 &&!session && (
                                                         <p>Login to see your orders</p>
                                                     )}
+                                                    {
+                                                        session && orders.length === 0 && <p>Your order is empty</p>
+                                                    }
                                                     {orders.length > 0 && orders.map((o, index) => (
                                                         <SingleOrder key={index}  {...o} />
                                                     ))}

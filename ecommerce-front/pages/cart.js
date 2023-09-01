@@ -17,7 +17,25 @@ const ColumnWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     gap: 40px;
-    margin-top: 40px;
+    margin: 40px 0;
+
+    table thead tr th:nth-child(3),
+    table tbody tr td:nth-child(3),
+    table tbody tr.subtotal td:nth-child(2)
+    {
+        text-align: right;
+    }
+
+     table tr.subtotal td{
+        padding: 10px 0;
+     }
+
+     table tr.subtotal td:nth-child(2){
+        font-size: 1.4rem;
+     }
+     tr.total td{
+        font-weight: bold;
+     }
     
     /** media queries for bigger screen */
   @media screen and (min-width: 768px) {
@@ -83,6 +101,7 @@ export default function Cart() {
     const [province, setProvince] = useState('')
     const [country, setCountry] = useState('')
     const [isSuccess, setIsSuccess] = useState(false)
+    const [shippingFee, setShippingFee] = useState(null)
     const { data: session } = useSession()
     /*********************************************/
     useEffect(() => {
@@ -103,6 +122,10 @@ export default function Cart() {
             setIsSuccess(true);
             clearCart();
         }
+
+        axios.get('/api/settings?name=shippingFee').then((res) => (
+            setShippingFee(res.data.value)
+        ))
 
     }, []);
 
@@ -153,10 +176,10 @@ export default function Cart() {
     /** calculating the total price 
      * @param total
     */
-    let total = 0;
+    let productsTotal = 0;
     for (const productId of cartProducts) {
         const price = products.find((p) => p._id === productId)?.price || 0
-        total += price
+        productsTotal += price
     }
 
     /** check if the global window includes a success message */
@@ -227,10 +250,17 @@ export default function Cart() {
 
                                                 ))
                                             }
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td>${total}</td>
+                                            <tr className="subtotal">
+                                                <td colSpan={2}>Products</td>
+                                                <td>${productsTotal}</td>
+                                            </tr>
+                                            <tr className="subtotal">
+                                                <td colSpan={2}>Shipping</td>
+                                                <td colSpan={2}>${shippingFee}</td>
+                                            </tr>
+                                            <tr className="subtotal total">
+                                                <td colSpan={2}>Total</td>
+                                                <td>${productsTotal + parseInt(shippingFee)}</td>
                                             </tr>
                                         </tbody>
                                     </Table>

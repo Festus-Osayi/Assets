@@ -23,9 +23,9 @@ export default function Home({ featuredProduct, newProduct, wishedProducts }) {
 
 /** grabbing a product by id, from our database */
 export const getServerSideProps = async (context) => {
+  await createConnections()
   const featuredProductBId = await Settings.findOne({ name: 'featuredProductsId' })
   const featuredProductId = featuredProductBId.value
-  await createConnections()
   const featuredProduct = await Product.findById(featuredProductId)
   const newProduct = await Product.find({}, null, { sort: { '_id': -1 }, limit: 10 })
 
