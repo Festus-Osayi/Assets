@@ -3,13 +3,16 @@ import { Admin } from '@/models/admin'
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import NextAuth, { getServerSession } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import { createConnections } from '@/lib/mongoose'
 
 
 /** a functionality that checks
  * if the admin email is on
  * the admin database
  */
+
 async function isAdminEmail(email) {
+    createConnections()
     return !!(await Admin.findOne({ email }))
 
 }
@@ -26,11 +29,8 @@ export const authOptions = {
     /** validating the admin */
     callbacks: {
         session: async ({ session, token, user }) => {
-            if (await isAdminEmail(session?.user?.email)) {
-                return session
-            } else {
-                return false
-            }
+            return (await isAdminEmail(session?.user?.email)) ? session : false
+
         }
     }
 

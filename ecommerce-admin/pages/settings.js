@@ -10,54 +10,65 @@ function SettingsPage({ swal }) {
     const [featuredProducts, setFeaturedProducts] = useState([])
     const [featuredProductsId, setFeaturedProductsId] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [isFeaturedLoading, setIsFeaturedLoading] = useState(false)
+    const [shippingFee, setShippingFee] = useState('')
     /** fetch products on mount */
     useEffect(() => {
         setIsLoading(true)
-        axios.get('/api/products').then((res) => {
+        fetchAll()
+
+    }, [])
+
+    /** functionality to fetch all product */
+    const fetchAll = async () => {
+        await axios.get('/api/products').then((res) => {
             setFeaturedProducts(res.data)
-            setIsLoading(false)
+
         })
 
-        setIsFeaturedLoading(true)
-        axios.get('/api/settings?name=featuredProductsId')
+
+        await axios.get('/api/settings?name=featuredProductsId')
             .then((res) => {
                 setFeaturedProductsId(res.data.value)
-                setIsFeaturedLoading(false)
+
             })
-    }, [])
+        await axios.get('/api/settings?name=shippingFee')
+            .then((res) => {
+                setShippingFee(res?.data?.value)
+
+            })
+
+        setIsLoading(false)
+    }
 
     /** functionality to save the given settings */
     const saveSettings = async () => {
+        setIsLoading(true)
         await axios.put('/api/settings', {
             name: 'featuredProductsId',
             value: featuredProductsId,
-        }).then((result) => {
-            if (result.status === 200) {
-                // show success message
-                swal.fire({
-                    title: "Settings successfully saved",
-                    icon: 'success'
-                })
-            }
-        }).catch((err) => {
-            swal.fire({
-                title: "Unable to save settings",
-                text: err.response.message,
-                icon: 'error'
-            })
         })
+        await axios.put('/api/settings', {
+            name: 'shippingFee',
+            value: shippingFee,
+        })
+        setIsLoading(false)
+        // show success message
+        await swal.fire({
+            title: "Settings successfully saved",
+            icon: 'success'
+        })
+
     }
     return (
         <Layout>
             <h2>Settings</h2>
             {/* spinner */}
             {
-                (isLoading || isFeaturedLoading) && <Spinners fullWidth={true} />
+                isLoading && <Spinners fullWidth={true} />
             }
             {/* map through all the featured products array */}
             {
-                (!isLoading || !isFeaturedLoading) && (
+                !isLoading && (
                     <>
                         <label>Featured products</label>
                         <select
@@ -71,6 +82,12 @@ function SettingsPage({ swal }) {
                                 ))
                             }
                         </select>
+                        <label>Shipping fee</label>
+                        <input
+                            type="number"
+                            value={shippingFee}
+                            onChange={(e) => setShippingFee(e.target.value)}
+                        />
                         <div>
                             <button
                                 onClick={saveSettings}
