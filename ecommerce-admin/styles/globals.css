@@ -26,7 +26,7 @@ h1 {
     @apply text-xl text-gray-800 mb-4 font-semibold;
 }
 
-h2{
+h2 {
     @apply text-gray-800 mt-4 mb-2 text-lg;
 }
 
@@ -36,7 +36,32 @@ label {
 
 .btn-primary {
     @apply bg-primary text-white px-4 py-1 rounded-md shadow-sm;
-    
+
+}
+
+textarea {
+    @apply resize-none;
+}
+
+img {
+    max-height: 100%;
+}
+
+/* table.table thead tr td,
+table.table thead tr th {
+    @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-4 py-2;
+} */
+
+
+table.basic,
+thead,
+tr,
+td,
+table.basic,
+thead,
+tr,
+th {
+    @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-4 py-2;
 }
 
 /* table */
@@ -56,40 +81,20 @@ table.basic a {
     @apply py-1 px-2 rounded-md text-sm font-semibold inline-flex justify-center items-center gap-2 mr-1;
 }
 
-
-
-textarea {
-    @apply resize-none;
-}
-
-img {
-    max-height: 100%;
-}
-
-/* table.table thead tr td,
-table.table thead tr th {
-    @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-4 py-2;
-} */
-
-
-.basic, thead, tr, td {
-    @apply text-sm text-gray-600 uppercase border-b border-gray-200 px-4 py-2;
-}
-
-
 .btn-default {
     @apply bg-white text-gray-800 px-4 py-1 border border-gray-200 shadow-sm rounded-md;
 }
 
-.btn-default, .btn-red{
+.btn-default,
+.btn-red {
     @apply px-4 py-1 rounded-md
 }
 
-.btn-red{
+.btn-red {
     @apply bg-red-300 text-red-600 px-4 py-1 rounded-md shadow-sm;
-    
+
 }
 
-.basic td{
+.basic td {
     @apply text-center
 }

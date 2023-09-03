@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import { SessionProvider } from "next-auth/react"
+import '../styles/stats.css'
 
 
 export default function App({

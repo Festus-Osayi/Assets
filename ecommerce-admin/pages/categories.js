@@ -92,7 +92,6 @@ export function Categories({ swal }) {
             reverseButtons: true,
         }).then(async result => {
             if (result.isConfirmed) {
-                try {
                     const { _id } = category;
                     await axios.delete(`/api/categories?_id=${_id}`).then(()=>{
                         swal.fire({
@@ -101,14 +100,14 @@ export function Categories({ swal }) {
                         })
                     });
                     fetchCategories();
-                } catch (err) {
-                    console.log('error deleting category');
-                }
-            } else {
-                // do nothing...
-                console.log('result is unconfirmed!!')
-            }
-        });
+               
+            } 
+        }).catch((err)=>{
+            swal.fire({
+                title: `Unable to delete ${category.name}`,
+                icon: 'error'
+            })
+        })
     }
 
     /** functionality to add property */
