@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import FlyingButtonOriginal from "react-flying-item"; /** animations */
 import { CartContext } from "@/context/CartContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ButtonStyle } from "../buttons/Buttons";
