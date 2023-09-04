@@ -102,7 +102,7 @@ function AdminsPage({ swal }) {
                 <thead>
                     <tr>
                         <th className="text-left">Admin google email</th>
-                        <th>created At</th>
+                        <th className="whitespace-nowrap">created At</th>
                         <th></th>
                     </tr>
                 </thead>
