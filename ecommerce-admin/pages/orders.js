@@ -3,6 +3,7 @@ import Spinners from "@/components/Spinners";
 import { dateFormatter } from "@/lib/date";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import React from "react";
 
 export default function OrdersPage() {
     /******** application states *********/
@@ -23,7 +24,7 @@ export default function OrdersPage() {
             <table className="basic">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Date</th>
                         <th>Paid</th>
                         <th>Recipient</th>
                         <th>Product</th>
@@ -49,21 +50,24 @@ export default function OrdersPage() {
                             <tr key={order._id}>
                                 <td>
                                     {
-                                       dateFormatter(order.createdAt)
+                                        dateFormatter(order.createdAt)
                                     }
                                 </td>
                                 <td className={order.isPaid ? 'text-green-600' : 'text-red-600'}>{order.isPaid ? 'Yes' : 'No'}</td>
                                 <td>
-                                    {order.name} {order.email}<br />
-                                    {order.city} {order.postalCode} {order.streetAddress} <br />
+                                    {order.name} <br/> {order.email}<br />
+                                    {order.city} {order.postalCode} <br />
+                                    {order.streetAddress} <br />
                                     {order.province} {order.country}
                                 </td>
-                                {
-                                    order.line_items.map((l, index) => (
-                                        <td key={index}>{l.price_data.product_data.name} X{l.quantity}</td>
-                                    ))
-
-                                }
+                                <td>
+                                    {order.line_items.map((l, index) => (
+                                        <React.Fragment key={index}>
+                                            {l.price_data?.product_data.name} x
+                                            {l.quantity}<br />
+                                        </React.Fragment>
+                                    ))}
+                                </td>
 
                             </tr>
                         ))
