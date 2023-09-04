@@ -41,6 +41,7 @@ export const getServerSideProps = async (context) => {
 
   return {
     props: {
+      
       featuredProduct: JSON.parse(JSON.stringify(featuredProduct)),
       newProduct: JSON.parse(JSON.stringify(newProduct)),
       wishedProducts: wishedNewProducts.map(i => i.product.toString()),

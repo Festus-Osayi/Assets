@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 /** styling */
 const ColumnWrapper = styled.div`
 display: grid;
-grid-template-columns: 1.2fr .8fr;
+grid-template-columns: 1fr;
 gap: 30px;
 margin: 40px 0;
 hr{
@@ -29,6 +29,10 @@ hr{
 }
 p{
     margin: 5px;
+}
+
+@media screen and (min-width: 768px) {
+    grid-template-columns: 1.2fr .8fr;
 }
 `
 const WisHListGrid = styled.div`

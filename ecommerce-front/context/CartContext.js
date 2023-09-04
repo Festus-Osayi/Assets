@@ -26,7 +26,7 @@ export default function CartContextProvider({ children }) {
     }
     /** a functionality to clear cart */
     function clearCart() {
-        setCartProducts([]);
+        return setCartProducts([]);
     }
     useEffect(() => {
         /** save the products to local storage on mount */

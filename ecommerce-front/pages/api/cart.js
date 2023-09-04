@@ -5,5 +5,8 @@ import { Product } from "@/models/products";
 export default async function handler(req, res) {
     await createConnections()
     const ids = await req.body.ids
+    
     res.json(await Product.find({ _id: ids }))
+    
+
 }

@@ -11,6 +11,7 @@ import CartIcons from "@/components/icons/CartIcons";
 import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
 import FlyingButton from "@/components/reusable-styles/FlyingButton";
+import ProductsReviews from "@/components/productsreviews/ProductsReviews";
 
 const ColWrapper = styled.div`
 display: grid;
@@ -33,7 +34,7 @@ font-size: 1.4rem;
 `
 
 export default function Products({ products }) {
-    
+
     return (
         <>
             <Header />
@@ -60,6 +61,7 @@ export default function Products({ products }) {
                         </PriceRow>
                     </div>
                 </ColWrapper>
+                <ProductsReviews products={products} />
             </Center>
         </>
     )

@@ -78,6 +78,7 @@ export default async function handler(req, res) {
         success_url: `${process.env.PUBLIC_URL}/cart?success=1`,
         cancel_url: `${process.env.PUBLIC_URL}/cart?cancel=1`,
         metadata: { orderId: orderDoc._id?.toString() },
+        allow_promotion_codes: true, // coupon code
         shipping_options: [
             {
                 shipping_rate_data: {
@@ -91,7 +92,7 @@ export default async function handler(req, res) {
 
     })
 
-    res.json({
+    return res.json({
         url: stripeSession?.url
     })
 
