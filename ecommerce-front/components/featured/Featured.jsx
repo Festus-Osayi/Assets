@@ -78,7 +78,8 @@ const ImageColumn = styled(Column)`
 
 const ContentWrapper = styled.div`
 `
-export default function Featured({ product }) {
+export default function Featured({ product}) {
+  
   return (
     <Bg>
       <Center>
@@ -88,11 +89,11 @@ export default function Featured({ product }) {
               {/* Add to cart button */}
               <RevealWrapper origin="left" delay={0}>
                 <ContentWrapper>
-                  <Title>{product.title}</Title>
-                  <Desc>{product.description}</Desc>
+                  <Title>{product?.title}</Title>
+                  <Desc>{product?.description}</Desc>
                   <ButtonsWrapper>
                     <ButtonLinks
-                      href={`/products/${product._id}`}
+                      href={`/products/${product?._id}`}
                       size="l"
                       white={1}
                       outline={1}
@@ -101,8 +102,8 @@ export default function Featured({ product }) {
                     </ButtonLinks>
                     <FlyingButton
                       white={1}
-                      _id={product._id}
-                      src={product.images?.[0]}
+                      _id={product?._id}
+                      src={product?.images?.[0]}
                       main={1}
                       size="l"
                     >
@@ -118,7 +119,7 @@ export default function Featured({ product }) {
             {/* animation */}
             <RevealWrapper delay={0}>
               <ImageWrapper>
-                <Images src={product.images?.[0]} alt={product.title} />
+                <Images src={product?.images?.[0]} alt={product?.title} />
               </ImageWrapper>
             </RevealWrapper>
           </ImageColumn>

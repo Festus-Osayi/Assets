@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const session = await getServerSession(req, res, authOptions)
     try {
 
-        return res.json(await Orders.find({ userEmail: session?.user?.email }))
+        res.json(await Orders.find({ userEmail: session?.user?.email }))
 
     } catch (err) {
         console.log("error", err);

@@ -23,7 +23,7 @@ const Logo = styled(Link)`
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 20px 0px;
+  padding: 20px 0;
 `;
 
 const StyledNav = styled.nav`
@@ -31,11 +31,10 @@ const StyledNav = styled.nav`
   ${(props) => (props.mobileNavActive ? "display: block;" : "display: none;")}
   gap: 15px;
   position: fixed;
-  top: 50px;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 20px;
   background-color: #222;
   padding: 70px 20px 20px;
   /** media queries for big screen */
@@ -44,6 +43,7 @@ const StyledNav = styled.nav`
     position: static;
     background-color: #283046;
     padding: 0;
+    
   }
 `;
 const NavLink = styled(Link)`

@@ -16,13 +16,19 @@ const CategoryHeader = styled.div`
 display: flex;
 align-items: center;
 justify-content: space-between;
+
 h1{
+    
     font-size: 1.5em;
 }
 `
 const FilterWrappers = styled.div`
-display: flex;
+display: none;
 gap: 15px;
+
+ @media screen and (min-width: 768px) {
+    display: flex;
+ }
 `
 const Filter = styled.div`
 background-color: #ddd;
@@ -37,7 +43,10 @@ select{
     font-size: inherit;
     color: #444;
 }
+
 `
+
+
 export default function CategoryPage({
     category,
     products: originalProducts,
@@ -102,6 +111,7 @@ export default function CategoryPage({
             <Header />
             <Center>
                 <CategoryHeader>
+                    
                     <h1>{category.name}</h1>
                     <FilterWrappers>
                         {/* TODO: map through all categories properties */}
@@ -151,7 +161,9 @@ export default function CategoryPage({
                 {
                     loadingProducts && <Spinner fullWidth />
                 }
+                
                 {
+
 
                     !loadingProducts && <div>
                         {products.length > 0 ? <ProductsGrid products={products} /> : <WhiteBox>Sorry, no product found</WhiteBox>}

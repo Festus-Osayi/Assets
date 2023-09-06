@@ -15,7 +15,7 @@ export default async function handler(req, res) {
                     }
                 }).catch((err) => {
                     console.log('error', err);
-                    es.status(500).json({ message: 'Internal server error' })
+                    res.status(500).json({ message: 'Internal server error' })
                 })
                 break;
             default:

@@ -17,13 +17,13 @@ export default async function handler(req, res) {
                 const wishDoc = await WishedProducts.findOne({ userEmail: session?.user.email, product })
                 if (wishDoc) {
                     await WishedProducts.findByIdAndDelete(wishDoc._id)
-                    return res.json(`Product removed from your wishlist`)
+                    res.json(`Product removed from your wishlist`)
                 } else {
                     await WishedProducts.create({
                         userEmail: session?.user.email,
                         product
                     })
-                    return res.json(`Product added to your wishlist`)
+                    res.json(`Product added to your wishlist`)
                 }
             }
             catch (err) {

@@ -153,7 +153,7 @@ export default function AccountPage() {
                                                     {
                                                         session && orders.length === 0 && <p>Your order is empty</p>
                                                     }
-                                                    {orders.length > 0 && orders.map((o, index) => (
+                                                    {orders && orders.length > 0 && orders.map((o, index) => (
                                                         <SingleOrder key={index}  {...o} />
                                                     ))}
                                                 </div>
@@ -168,7 +168,7 @@ export default function AccountPage() {
                                             {isWishListLoading && (
                                                 <>
                                                     <WisHListGrid>
-                                                        {wishedList.length > 0 && wishedList.map(wp => (
+                                                        {wishedList && wishedList.length > 0 && wishedList.map((wp) => (
                                                             <ProductsCards key={wp._id} {...wp} wished={true} onRemoveFromWishlist={removeWishList} />
                                                         ))}
                                                     </WisHListGrid>

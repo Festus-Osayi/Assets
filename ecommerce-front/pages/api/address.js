@@ -5,26 +5,28 @@ import { authOptions } from "./auth/[...nextauth]"
 
 export default async function handler(req, res) {
     /** create the database connection */
-    await createConnections()
+    try {
+        await createConnections();
+        const session = getServerSession(req, res, authOptions);
+        const address = await Address.findOne({ userEmail: session?.user?.email });
 
-    const session = getServerSession(req, res, authOptions)
-    const address = await Address.findOne({ userEmail: session?.user?.email })
-    if (req.method === 'PUT') {
-        let updateAddress;
-        if (address) {
-            updateAddress = res.status(200).json(await Address.findByIdAndUpdate(address._id, req.body))
-        } else {
-            updateAddress = res.status(200).json(await Address.create({ userEmail: session?.user?.email, ...req.body }))
+        if (req.method === 'PUT') {
+            let updateAddress;
+            if (address) {
+                updateAddress = await Address.findByIdAndUpdate(address._id, req.body);
+            } else {
+                updateAddress = await Address.create({ userEmail: session?.user?.email, ...req.body });
+            }
+
+            res.status(200).json(updateAddress);
         }
 
-        return res.json(updateAddress)
-    }
-
-    if (req.method === "GET") {
-        /** grab the user session */
-        // const { user } = getServerSession(req, res, authOptions)
-        // const address = await Address.findOne({ userEmail: user?.email })
-        return res.json(address)
+        if (req.method === "GET") {
+            res.json(address);
+        }
+    } catch (error) {
+        console.error("Error in address route:", error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 
 

@@ -11,6 +11,8 @@ import { Title } from "@/components/reusable-styles/Title";
 import { WhiteBox } from "@/components/reusable-styles/WhiteBox";
 import { RevealWrapper } from "next-reveal";
 import { useSession } from "next-auth/react";
+import Spinner from "@/components/spinner/Spinner";
+import { set } from "lodash";
 
 
 const ColumnWrapper = styled.div`
@@ -102,16 +104,29 @@ export default function Cart() {
     const [country, setCountry] = useState('')
     const [isSuccess, setIsSuccess] = useState(false)
     const [shippingFee, setShippingFee] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
     const { data: session } = useSession()
     /*********************************************/
     useEffect(() => {
-        if (cartProducts.length > 0) {
-            axios.post('/api/cart', { ids: cartProducts }).then((res) => setProducts(res.data))
+
+        if (cartProducts && cartProducts.length > 0) {
+            setIsLoading(true)
+            axios.post('/api/cart', { ids: cartProducts }).then((res) => {
+                setProducts(res.data)
+                setIsLoading(false)
+            }).catch((err) => {
+                setIsLoading(false)
+                console.error('Error fetching cart products:', err)
+
+            })
+
         } else {
             setProducts([])
+            setIsLoading(false)
         }
 
     }, [cartProducts])
+
 
 
     useEffect(() => {
@@ -139,6 +154,7 @@ export default function Cart() {
          * prefill the form in the cart page with
          * the data returned
          */
+        setIsLoading(true)
         axios.get('/api/address').then((res) => {
             setName(res.data.name)
             setEmail(res.data.email)
@@ -147,6 +163,7 @@ export default function Cart() {
             setStreetAddress(res.data.streetAddress)
             setProvince(res.data.province)
             setCountry(res.data.country)
+            setIsLoading(false)
 
         })
     }, [session])
@@ -207,6 +224,7 @@ export default function Cart() {
                     <RevealWrapper delay={0}>
                         <WhiteBox>
                             <Title>Cart</Title>
+                            {isLoading && <Spinner fullWidth={true} />}
                             {
                                 !cartProducts.length > 0 &&
                                 <h2>Your cart is empty</h2>
@@ -214,7 +232,7 @@ export default function Cart() {
 
                             {/* cart items tables */}
                             {
-                                products.length > 0 && (
+                                !isLoading && products.length > 0 && (
                                     <Table>
                                         <thead>
                                             <tr>
@@ -279,51 +297,55 @@ export default function Cart() {
                             <WhiteBox>
                                 <h2>Order Information</h2>
                                 {/* shipping info and stripe payment action*/}
-
-                                <Input type="text"
-                                    placeholder="Name"
-                                    value={name}
-                                    name='name'
-                                    onChange={(e) => setName(e.target.value)} />
-                                <Input type="email"
-                                    placeholder="Email"
-                                    value={email}
-                                    name='email'
-                                    onChange={(e) => setEmail(e.target.value)} />
-                                <CityPostalCode>
-                                    <Input type="text"
-                                        placeholder="City"
-                                        value={city}
-                                        name='city'
-                                        onChange={(e) => setCity(e.target.value)} />
-                                    <Input type="text"
-                                        placeholder="Postal code"
-                                        value={postalCode}
-                                        name='postalCode'
-                                        onChange={(e) => setPostalCode(e.target.value)} />
-                                </CityPostalCode>
-                                <Input type="text"
-                                    placeholder="Street address"
-                                    value={streetAddress}
-                                    name='streetAddress'
-                                    onChange={(e) => setStreetAddress(e.target.value)} />
-                                <Input type="text"
-                                    placeholder="Province City State"
-                                    value={province}
-                                    name='province'
-                                    onChange={(e) => setProvince(e.target.value)} />
-                                <Input type="text"
-                                    placeholder="Country"
-                                    value={country}
-                                    name='country'
-                                    onChange={(e) => setCountry(e.target.value)} />
-                                <Buttons
-                                    black
-                                    block
-                                    onClick={goToPayment}
-                                >
-                                    Continue to payment
-                                </Buttons>
+                                {isLoading && <Spinner fullWidth={true}/>}
+                                {!isLoading && (
+                                    <>
+                                        <Input type="text"
+                                            placeholder="Name"
+                                            value={name}
+                                            name='name'
+                                            onChange={(e) => setName(e.target.value)} />
+                                        <Input type="email"
+                                            placeholder="Email"
+                                            value={email}
+                                            name='email'
+                                            onChange={(e) => setEmail(e.target.value)} />
+                                        <CityPostalCode>
+                                            <Input type="text"
+                                                placeholder="City"
+                                                value={city}
+                                                name='city'
+                                                onChange={(e) => setCity(e.target.value)} />
+                                            <Input type="text"
+                                                placeholder="Postal code"
+                                                value={postalCode}
+                                                name='postalCode'
+                                                onChange={(e) => setPostalCode(e.target.value)} />
+                                        </CityPostalCode>
+                                        <Input type="text"
+                                            placeholder="Street address"
+                                            value={streetAddress}
+                                            name='streetAddress'
+                                            onChange={(e) => setStreetAddress(e.target.value)} />
+                                        <Input type="text"
+                                            placeholder="Province City State"
+                                            value={province}
+                                            name='province'
+                                            onChange={(e) => setProvince(e.target.value)} />
+                                        <Input type="text"
+                                            placeholder="Country"
+                                            value={country}
+                                            name='country'
+                                            onChange={(e) => setCountry(e.target.value)} />
+                                        <Buttons
+                                            black
+                                            block
+                                            onClick={goToPayment}
+                                        >
+                                            Continue to payment
+                                        </Buttons>
+                                    </>
+                                )}
                             </WhiteBox>
                         </RevealWrapper>
                     }
