@@ -40,7 +40,7 @@ const history = () => {
     setSearchHistory(await removeFromHistory(searchHistory[index]))
 
   }
-console.log(parsedHistory)
+
   /**	
    * The component must render the "parsedHistory" (created above) in
    * the component
