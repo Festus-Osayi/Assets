@@ -43,7 +43,7 @@ gap: 40px;
 export default function AccountPage() {
 
     const { data: session } = useSession()
-    
+
     /*************  application states ************/
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -97,13 +97,13 @@ export default function AccountPage() {
         axios.get('/api/address').then((res) => {
 
             /** update the state with response from server */
-            setName(res.data.name)
-            setEmail(res.data.email)
-            setCity(res.data.city)
-            setPostalCode(res.data.postalCode)
-            setStreetAddress(res.data.streetAddress)
-            setProvince(res.data.province)
-            setCountry(res.data.country)
+            setName(res?.data?.name)
+            setEmail(res?.data?.email)
+            setCity(res?.data?.city)
+            setPostalCode(res?.data?.postalCode)
+            setStreetAddress(res?.data?.streetAddress)
+            setProvince(res?.data?.province)
+            setCountry(res?.data?.country)
             setIsAddressLoading(true)
         })
 
@@ -147,7 +147,7 @@ export default function AccountPage() {
                                             )}
                                             {isOrderLoading && (
                                                 <div>
-                                                    {orders.length === 0 &&!session && (
+                                                    {orders.length === 0 && !session && (
                                                         <p>Login to see your orders</p>
                                                     )}
                                                     {
@@ -225,6 +225,11 @@ export default function AccountPage() {
                                                 value={streetAddress}
                                                 name="streetAddress"
                                                 onChange={ev => setStreetAddress(ev.target.value)} />
+                                            <Input type="text"
+                                                placeholder="Province City State"
+                                                value={province}
+                                                name="streetAddress"
+                                                onChange={ev => setProvince(ev.target.value)} />
                                             <Input type="text"
                                                 placeholder="Country"
                                                 value={country}

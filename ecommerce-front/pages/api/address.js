@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     /** create the database connection */
     try {
         await createConnections();
-        const session = getServerSession(req, res, authOptions);
+        const session = await getServerSession(req, res, authOptions);
         const address = await Address.findOne({ userEmail: session?.user?.email });
 
         if (req.method === 'PUT') {

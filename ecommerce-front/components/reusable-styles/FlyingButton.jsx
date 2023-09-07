@@ -71,10 +71,9 @@ export default function FlyingButton(props) {
 
   /** functionality to send the image to cart */
   const sendImageToCart = (e) => {
-    console.log(e);
     imageRef.current.style.display = "inline-block";
-    imageRef.current.style.left = (e.clientX - 50) + "px";
-    imageRef.current.style.top = (e.clientY - 50) + "px";
+    imageRef.current.style.left = e.clientX - 50 + "px";
+    imageRef.current.style.top = e.clientY - 50 + "px";
     setTimeout(() => {
       imageRef.current.style.display = "none";
     }, 1000);
