@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     const shippingFeeCents = parseInt(shippingFeeSetting.value || '0') * 100;
 
 
-    const baseUrl = process.env.PUBLIC_URL === 'production' ? 'https://ecommerce-front-neon.vercel.app/' : 'http://localhost:4000/'
+    const baseUrl = process.env.NODE_ENV === 'production' ? 'https://ecommerce-front-neon.vercel.app/' : 'http://localhost:4000/'
     const stripeSession = await stripe.checkout.sessions.create({
         line_items,
         mode: 'payment',
