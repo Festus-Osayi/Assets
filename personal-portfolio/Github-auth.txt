@@ -1,0 +1,6 @@
+Client Id: ba35944909c4fa6139f5
+Client Secrets: dd3a8cd6bb24b65a1b420dd6515529e5aa345af6
+Cyclic URL: https://weak-getup-dove.cyclic.cloud
+MONGODB USERNAME: osayifestus25
+MONGODB PASSWORD: EeFZLbBZGt00DuDX
+study_project connection string: mongodb+srv://osayifestus25:<password>@study-projects.nmb69ag.mongodb.net/
