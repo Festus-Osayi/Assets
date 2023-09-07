@@ -1,7 +1,6 @@
 import Buttons from "@/components/buttons/Buttons";
 import Center from "@/components/center/Center";
 import Header from "@/components/header/Header";
-import { Title } from "@/components/reusable-styles/Title";
 import { WhiteBox } from "@/components/reusable-styles/WhiteBox";
 import { useSession, signOut, signIn } from "next-auth/react"
 import { RevealWrapper } from "next-reveal";
@@ -14,7 +13,8 @@ import Spinner from "@/components/spinner/Spinner";
 import ProductsCards from "@/components/productscards/ProductsCards";
 import Tabs from "@/components/tabs/Tabs";
 import SingleOrder from "@/components/orderItems/SingleOrder";
-import { useRouter } from "next/router";
+import { withSwal } from "react-sweetalert2";
+
 
 /** styling */
 const ColumnWrapper = styled.div`
@@ -40,7 +40,7 @@ display: grid;
 grid-template-columns: 1fr 1fr;
 gap: 40px;
 `
-export default function AccountPage() {
+function AccountPage({ swal }) {
 
     const { data: session } = useSession()
 
@@ -58,8 +58,9 @@ export default function AccountPage() {
     const [activeTabs, setActiveTabs] = useState('Orders')
     const [orders, setOrders] = useState([])
     const [isOrderLoading, setIsOrderLoading] = useState(true)
+
     /*********************************************/
-    const router = useRouter()
+
     /** functionality for logout */
     async function logout() {
         await signOut({
@@ -82,6 +83,11 @@ export default function AccountPage() {
             country
         }
         await axios.put('/api/address', data)
+        await swal.fire({
+            title: "Account saved successfully",
+            icon: 'success'
+        })
+
 
     }
 
@@ -259,4 +265,8 @@ export default function AccountPage() {
 
     )
 }
+
+export default withSwal(({ swal }) => (
+    <AccountPage swal={swal} />
+))
 
