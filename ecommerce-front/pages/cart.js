@@ -108,9 +108,8 @@ export default function Cart() {
     const { data: session } = useSession()
     /*********************************************/
     useEffect(() => {
-
+        setIsLoading(true)
         if (cartProducts && cartProducts.length > 0) {
-            setIsLoading(true)
             axios.post('/api/cart', { ids: cartProducts }).then((res) => {
                 setProducts(res.data)
                 setIsLoading(false)
@@ -121,8 +120,9 @@ export default function Cart() {
             })
 
         } else {
-            setProducts([])
             setIsLoading(false)
+            setProducts([])
+            
         }
 
     }, [cartProducts])
@@ -226,7 +226,7 @@ export default function Cart() {
                             <Title>Cart</Title>
                             {isLoading && <Spinner fullWidth={true} />}
                             {
-                                !cartProducts.length > 0 &&
+                                 cartProducts.length === 0 &&
                                 <h2>Your cart is empty</h2>
                             }
 

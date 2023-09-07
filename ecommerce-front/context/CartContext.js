@@ -1,4 +1,4 @@
-const { createContext, useState, useEffect } = require("react");
+import { createContext, useState, useEffect } from "react";
 
 
 
@@ -26,7 +26,10 @@ export default function CartContextProvider({ children }) {
     }
     /** a functionality to clear cart */
     function clearCart() {
-        return setCartProducts([]);
+        /** the cart in local storage */
+        localStorage.removeItem('cart')
+        /** set the cart to an empty array */
+        setCartProducts([]);
     }
     useEffect(() => {
         /** save the products to local storage on mount */
