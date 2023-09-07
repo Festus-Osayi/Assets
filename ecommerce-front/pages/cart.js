@@ -226,7 +226,7 @@ export default function Cart() {
                             <Title>Cart</Title>
                             {isLoading && <Spinner fullWidth={true} />}
                             {
-                                !cartProducts.length > 0 &&
+                                cartProducts.length === 0 &&
                                 <h2>Your cart is empty</h2>
                             }
 
