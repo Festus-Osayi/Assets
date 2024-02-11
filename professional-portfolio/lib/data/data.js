@@ -58,8 +58,7 @@ export const data = [
         title: "Assembly Line",
         text: `The assembly line consists of a set of workstations each of which holds a set of stock items, which are specific to the station. A line manager moves customer orders along the line filling the orders at each station, as requested. Each customer order consists of a list of items that need to be filled. Each station processes a queue of orders by filling the next order in the queue if that order requests the station's item and that item is in stock.`,
         technologies: ['C++', 'File  handling', 'OOP', 'String', 'STL Containers', 'Classes', 'Inheritance', 'Polymorphism'],
-        webUrl: 'https://clean-cap-ox.cyclic.app/blog',
-        githubUrl: 'https://github.com/Festus-Osayi/Assets/tree/master/blogpost',
+        githubUrl: 'https://github.com/Festus-Osayi/Assets/tree/master/Assembly%20Line',
         category: 'C++',
 
 
@@ -72,8 +71,7 @@ export const data = [
         title: "Valet Parking",
         text: `A valet parking application in C++ that involved creating classes to represent vehicles, parking spots, and the parking lot itself, as well as implementing logic for parking and retrieving vehicles. With A graphical or command-line interface that allows parking attendants to interact with the system, inputting vehicle information, and executing parking and retrieval commands. `,
         technologies: ['C++', 'OOP', 'File handling', 'Classes', 'Inheritance', 'Polymorphism', 'Character', 'memory handling'],
-        webUrl: 'https://clean-cap-ox.cyclic.app/blog',
-        githubUrl: 'https://github.com/Festus-Osayi/Assets/tree/master/blogpost',
+        githubUrl: 'https://github.com/Festus-Osayi/Assets/tree/master/Valet%20Parking',
         category: 'C++',
 
 
@@ -86,8 +84,7 @@ export const data = [
         title: "The Ping Pong Game",
         text: `The Ping Pong game implemented in Python with Turtle graphics offers a classic arcade experience where two players compete against each other in a virtual table tennis match. The game is designed to be simple yet engaging, providing players with intuitive controls and clear visual feedback`,
         technologies: ['Python', 'Turtle Graphic', 'OOP', 'File handling'],
-        webUrl: 'https://clean-cap-ox.cyclic.app/blog',
-        githubUrl: 'https://github.com/Festus-Osayi/Assets/tree/master/blogpost',
+        githubUrl: 'https://github.com/Festus-Osayi/Assets/tree/master/The-pongGame',
         category: 'Python/Turtle Graphic'
 
     },
@@ -99,8 +96,7 @@ export const data = [
         title: "Snake Game",
         text: `The Snake game implemented in Python is a timeless arcade classic that challenges players to guide a growing snake as it navigates a grid-based environment. With its simple yet addictive gameplay mechanics, the Snake game offers players of all ages a thrilling experience as they strive to achieve the highest score possible`,
         technologies: ['Python', 'Turtle Graphic', 'File handling', 'OOP'],
-        webUrl: 'https://clean-cap-ox.cyclic.app/blog',
-        githubUrl: 'https://github.com/Festus-Osayi/Assets/tree/master/blogpost',
+        githubUrl: 'https://github.com/Festus-Osayi/Assets/tree/master/snake-project',
         category: 'Python/Turtle Graphic'
 
     },

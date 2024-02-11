@@ -50,12 +50,12 @@ export default function HomePage() {
             </div>
           </Col>
           <Col md='5' className='hidden lg:block'>
-              <Image
-                src='/assets/Festus Osayi.png'
-                alt='my personal image'
-                className='w-full h-full object-cover bg-no-repeat rounded-[50%]'
-                fluid
-              />
+            <Image
+              src='/assets/Festus Osayi.png'
+              alt='my personal image'
+              className='w-full h-full object-cover bg-no-repeat rounded-[50%]'
+              fluid
+            />
           </Col>
         </Row>
       </Container>
