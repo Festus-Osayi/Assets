@@ -1,0 +1,5 @@
+Firstly, I just wanted to say it has been amazing having you as my professor, I mean whoever is reading this. Secondly, in regards to the milestones or rather final projects.
+It has been a good projects and I have been able understand and learn so much with working on the projects. For example; reading and writing to a file with the ostream and istream or 
+using Fstream. Additionally, I have learned so much on our to navigate between numerous classes using the inheritance as a case of example. Furthermore, I have been able to understand every
+concepts of object programming in regards to solving and breaking down complex problem. Lastly, I learned so much about the importance of allocating and deallocating memeory which for me I believe is
+the core concepts of working with dynamic objects. Thank you.
