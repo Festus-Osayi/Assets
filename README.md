@@ -1,10 +1,10 @@
 # My Web Development and Python Projects
 
-This repository contains all my web development and Python projects, encompassing both frontend and backend aspects. Each project is designed with a beautiful and rich user interface, prioritizing the end user's experience.
+This repository contains all my web development, C++ and Python projects, encompassing both frontend and backend aspects. Each project is designed with a beautiful and rich user interface, prioritizing the end user's experience.
 
 ## Overview
 
-These projects were built using various technologies and frameworks, including Next.js, Python, JavaScript, HTML5, CSS3, Styled Components from React, Tailwind CSS, and more. They incorporate modern web development practices and aim to deliver seamless and intuitive user interactions.
+These projects were built using various technologies and frameworks, including Next.js, Python, C++, JavaScript, HTML5, CSS3, Styled Components from React, Tailwind CSS, and more. They incorporate modern web development practices and aim to deliver seamless and intuitive user interactions.
 
 ## Features
 
@@ -19,6 +19,8 @@ These projects were built using various technologies and frameworks, including N
 - Next.js
 - Python
 - JavaScript
+- C++
+- React
 - HTML5
 - CSS3
 - Styled Components (React)
