@@ -23,6 +23,13 @@ These projects were built using various technologies and frameworks, including N
 - CSS3
 - Styled Components (React)
 - Tailwind CSS
+- Bootstrap
+- Handlebars
+- Node.js
+- Express.js
+- MongoDB
+- PostgreSQL
+- Sequelize
 - Next-auth
 - bcryptjs
 - JWT (JSON Web Tokens)
@@ -31,6 +38,7 @@ These projects were built using various technologies and frameworks, including N
 - Local Storage
 - AWS S3 Bucket
 - Cloudinary
+- Google Cloud Platform (GCP)
 
 ## Contributing
 
