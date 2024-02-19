@@ -24,7 +24,7 @@ Before running this project, make sure you have the following installed:
 
    ```bash
    git clone https://github.com/Festus-Osayi/Assets.git
-   cd blogpost - navigate to the project directory
+   cd Assets/blogpost - navigate to the project directory
    npm install - install dependencies
    ```
 
