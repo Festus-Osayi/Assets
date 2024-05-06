@@ -5,6 +5,7 @@ import FlyingButton from "../reusable-styles/FlyingButton";
 import HeartOutline from "../icons/HeartOutline";
 import HeartSolid from "../icons/HeartSolid";
 import axios from "axios";
+import { formatPrice } from "@/lib/date";
 const ProductWrapper = styled.div`
   button {
     width: 100%;
@@ -128,7 +129,7 @@ export default function ProductsCards({
       <ProductCardInfo>
         <Title href={`/products/${_id}`}>{title}</Title>
         <PriceRow>
-          <Price>${price}</Price>
+          <Price>{formatPrice(price)}</Price>
 
           <FlyingButton src={images?.[0]} _id={_id}>
             Add to cart

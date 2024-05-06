@@ -13,6 +13,8 @@ import { RevealWrapper } from "next-reveal";
 import { useSession } from "next-auth/react";
 import Spinner from "@/components/spinner/Spinner";
 import { set } from "lodash";
+import { formatPrice } from "@/lib/date";
+
 
 
 const ColumnWrapper = styled.div`
@@ -263,22 +265,22 @@ export default function Cart() {
                                                             </QuantityLabel>
                                                             <Buttons onClick={() => moreOfThisProduct(p._id)}>+</Buttons>
                                                         </td>
-                                                        <td>${cartProducts.filter(id => id === p._id).length * p.price}</td>
+                                                        <td>{formatPrice(cartProducts.filter(id => id === p._id).length * p.price)}</td>
                                                     </tr>
 
                                                 ))
                                             }
                                             <tr className="subtotal">
                                                 <td colSpan={2}>Products</td>
-                                                <td>${productsTotal}</td>
+                                                <td>{formatPrice(productsTotal)}</td>
                                             </tr>
                                             <tr className="subtotal">
                                                 <td colSpan={2}>Shipping</td>
-                                                <td colSpan={2}>${shippingFee}</td>
+                                                <td colSpan={2}>{formatPrice(shippingFee)}</td>
                                             </tr>
                                             <tr className="subtotal total">
                                                 <td colSpan={2}>Total</td>
-                                                <td>${productsTotal + parseInt(shippingFee)}</td>
+                                                <td>{formatPrice(productsTotal + parseInt(shippingFee))}</td>
                                             </tr>
                                         </tbody>
                                     </Table>

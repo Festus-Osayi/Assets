@@ -12,6 +12,8 @@ import { useContext } from "react";
 import { CartContext } from "@/context/CartContext";
 import FlyingButton from "@/components/reusable-styles/FlyingButton";
 import ProductsReviews from "@/components/productsreviews/ProductsReviews";
+import { formatPrice } from "@/lib/date";
+
 
 const ColWrapper = styled.div`
 display: grid;
@@ -49,7 +51,7 @@ export default function Products({ products }) {
                         <PriceRow>
                             <div>
                                 <Price>
-                                    ${products.price}
+                                    {formatPrice(products.price)}
                                 </Price>
                             </div>
                             <div>
