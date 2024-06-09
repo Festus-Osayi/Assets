@@ -22,7 +22,7 @@ export default function ProjectsPage() {
                     <Row>
 
                         {
-                            data && data.length > 0 && data.filter((project) => project.id >= 1 && project.id <= itemsToShow).map((value) => (
+                            data && data.length > 0 && data.filter((project) => project.id >= 1 && project.id <= itemsToShow).map((value, index) => (
                                 <>
                                     <Col lg={4} md={6} className="relative" key={value.id}>
                                         <ProjectsCard {...value} />
