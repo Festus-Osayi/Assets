@@ -63,7 +63,7 @@ export const registerUser = async (user, password, password2) => {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ userName: user, password: password, password2: password2 })
     })
-
+    console.log(process.env.NEXT_PUBLIC_API_URL)
     const data = await res.json()
     
     /** check if the return result status is (200) */

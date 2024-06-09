@@ -23,6 +23,7 @@ export default function Register(props) {
             await registerUser(user, password, password2)
             router.push('/login');
         } catch (err) {
+            console.log(err)
             setWarning(err.message)
 
         }
