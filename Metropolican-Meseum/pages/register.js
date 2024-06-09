@@ -45,7 +45,7 @@ export default function Register(props) {
                 </Form.Group>
                 <br />
                 <Form.Group>
-                    <Form.Label>Password:</Form.Label>
+                    <Form.Label>password:</Form.Label>
                     <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" id="password" name="password" required
                     pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$"
                     title="user password must contain, at least one uppercase letter, a digit, and at least one special symbol or character"
